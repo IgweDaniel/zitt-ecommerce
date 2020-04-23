@@ -1,12 +1,16 @@
 import React, { useRef, Fragment } from "react";
+import { ViewIcon } from "./svgIcons";
 
-const ProductItem = ({ images, id, name, price }) => {
+const ProductItem = ({ images, id, name, price, viewProduct }) => {
   const displayRef = useRef(null);
+  const actionRef = useRef(null);
   function handleHover() {
     displayRef.current.children[0].classList.add("hover");
+    actionRef.current.classList.add("animate");
   }
   function handleLeave() {
     displayRef.current.children[0].classList.remove("hover");
+    actionRef.current.classList.remove("animate");
   }
   return (
     <>
@@ -24,14 +28,22 @@ const ProductItem = ({ images, id, name, price }) => {
         </div>
         <div className="info">
           <span className="name">{name}</span>
-          <div className="action">
-            <span className="price">{price}$</span>
+          <span className="price">{price}$</span>
+        </div>
+        <div
+          className="action no-mobile"
+          ref={actionRef}
+          onClick={() => viewProduct(id)}
+        >
+          <div className="icon">
+            <ViewIcon size={15} />
           </div>
         </div>
       </div>
 
       <style jsx>{`
         .product {
+          position: relative;
           cursor: pointer;
           height: 100%;
           width: 100%;
@@ -82,10 +94,33 @@ const ProductItem = ({ images, id, name, price }) => {
           font-size: 13px;
           font-style: normal;
           font-family: "Catamaran";
-          width: 70%;
         }
         .info span.price {
           color: #888;
+        }
+
+        @media (min-width: 769px) {
+          .action {
+            top: 80%;
+            left: 50%;
+            position: absolute;
+            transform: translate(-50%, -120%);
+            z-index: 2;
+            background-color: #fff;
+            width: 35px;
+            height: 30px;
+            display: flex;
+            transition: all 0.2s ease-in-out;
+            opacity: 0;
+            justify-content: center;
+            align-items: center;
+            border-radius: 2px;
+          }
+          .action.animate {
+            opacity: 1;
+
+            transition: all 0.2s ease-in-out;
+          }
         }
       `}</style>
     </>

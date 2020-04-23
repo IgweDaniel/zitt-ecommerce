@@ -3,37 +3,43 @@ import React, { useState } from "react";
 import { categories, shopcategories } from "../fakedata";
 import { CircleIcon, CircleDotIcon } from "./svgIcons";
 import { Range } from "rc-slider";
+import Link from "next/link";
 
 const sizes = [
   {
-    name: "ALL",
+    label: "ALL",
+    name: "all",
   },
   {
-    name: "XS",
+    label: "XS",
+    name: "xs",
   },
   {
-    name: "S",
+    label: "S",
+    name: "s",
   },
   {
-    name: "M",
+    label: "M",
+    name: "m",
   },
   {
-    name: "L",
+    label: "L",
+    name: "l",
   },
   {
-    name: "XL",
+    label: "XL",
+    name: "xl",
   },
 ];
 
 const Filter = ({
-  price,
+  price: activePrice,
   category: activeCategory,
   size: activeSize,
-  updatePrice,
-  updateCategory,
-  updateSize,
+  updateSizeFilter,
+  updatePriceFilter,
 }) => {
-  console.log("cat", activeCategory);
+  const [price, setPrice] = useState(null);
 
   return (
     <div className="filter">
@@ -41,15 +47,17 @@ const Filter = ({
         <h5 className="title">Product Categories</h5>
         <ul>
           {shopcategories.map((cat, i) => (
-            <li key={i} onClick={() => updateCategory(cat.name)}>
+            <li key={i}>
               <span className="icon">
-                {activeCategory.toLowerCase() == cat.name.toLowerCase() ? (
+                {activeCategory == cat.name ? (
                   <CircleDotIcon fill="#f57e60" size={14} />
                 ) : (
                   <CircleIcon size={14} />
                 )}
               </span>
-              <span className="category-name">{cat.name}</span>
+              <Link href="/shop/[category]" as={`/shop/${cat.name}`}>
+                <span className="category-name">{cat.label}</span>
+              </Link>
             </li>
           ))}
         </ul>
@@ -64,12 +72,16 @@ const Filter = ({
               { borderColor: "#f57e60" },
               { borderColor: "#f57e60" },
             ]}
-            defaultValue={[0, 20]}
-            onAfterChange={updatePrice}
+            onChange={(price) => setPrice(price)}
+            value={price == null ? activePrice : price}
+            onAfterChange={updatePriceFilter}
           />
         </div>
         <span className="price-text">
-          ${price[0]}-${price[1]}
+          $
+          {price == null
+            ? activePrice[0] + "-" + activePrice[1]
+            : price[0] + "-" + price[1]}
         </span>
       </div>
 
@@ -78,15 +90,11 @@ const Filter = ({
         <ul>
           {sizes.map((size, i) => (
             <li
-              className={`${
-                activeSize.toLowerCase() == size.name.toLowerCase()
-                  ? "size-active"
-                  : ""
-              }`}
+              className={`${activeSize == size.name ? "size-active" : ""}`}
               key={i}
-              onClick={() => updateSize(size.name)}
+              onClick={() => updateSizeFilter(size.name)}
             >
-              {size.name}
+              {size.label}
             </li>
           ))}
         </ul>

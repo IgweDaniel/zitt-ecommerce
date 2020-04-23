@@ -125,6 +125,12 @@ const Layout = ({ page = "Home", ...props }) => {
           align-items: center;
           justify-content: center;
         }
+        .icon {
+          align-items: center;
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+        }
 
         footer {
           display: flex;

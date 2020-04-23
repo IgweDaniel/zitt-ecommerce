@@ -1,11 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 
-import { MdKeyboardArrowDown } from "react-icons/md";
 import { AiOutlineMenu } from "react-icons/ai";
-import { HeartIcon, CartIcon, UserIcon, SearchIcon } from "./svgIcons";
+import { CartIcon, UserIcon, SearchIcon } from "./svgIcons";
 
-//-2px 2px 81px -27px rgba(0,0,0,.29)
+const ICON_SIZE = 20;
 
 const NavBar = ({ color = "#fff", height, events, ...props }) => {
   const navBarRef = useRef(null);
@@ -21,7 +20,7 @@ const NavBar = ({ color = "#fff", height, events, ...props }) => {
       navBarRef.current.classList.add("scrolling");
     else navBarRef.current.classList.remove("scrolling");
   }
-  const ICON_SIZE = 20;
+
   return (
     <>
       <nav className="main" ref={navBarRef}>
@@ -38,7 +37,7 @@ const NavBar = ({ color = "#fff", height, events, ...props }) => {
             </Link>
           </li>
           <li>
-            <Link href="/shop">
+            <Link href="/shop/all">
               <a>SHOP</a>
             </Link>
           </li>
@@ -55,9 +54,6 @@ const NavBar = ({ color = "#fff", height, events, ...props }) => {
         </ul>
 
         <ul className="actions">
-          {/* <li>
-            <HeartIcon size={ICON_SIZE} />
-          </li> */}
           <li onClick={events.cart}>
             <CartIcon size={ICON_SIZE} />
           </li>

@@ -249,11 +249,11 @@ export const categories = [
 // ];
 
 export const shopcategories = [
-  { name: "All" },
-  { name: "#Summer" },
-  { name: "Jackets" },
-  { name: "Hoodies" },
-  { name: "Trouser" },
-  { name: "Accessories" },
-  { name: "Shoes" },
+  { label: "All Categories", name: "all" },
+  { label: "#Summer", name: "summer" },
+  { label: "Jackets", name: "jackets" },
+  { label: "Hoodies", name: "hoodies" },
+  { label: "Trouser", name: "trouser" },
+  { label: "Accessories", name: "accessories" },
+  { label: "Shoes", name: "shoes" },
 ];

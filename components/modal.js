@@ -1,8 +1,9 @@
 import React, { useRef, useEffect } from "react";
+import { useUpdateEffect } from "../hooks";
 
 const Modal = ({ children, closeModal, open = false, position = "left" }) => {
   const modalRef = useRef(null);
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (open) {
       modalRef.current.classList.add("open");
       setTimeout(() => {
@@ -12,9 +13,8 @@ const Modal = ({ children, closeModal, open = false, position = "left" }) => {
       modalRef.current.classList.remove("animate");
       setTimeout(() => {
         modalRef.current.classList.remove("open");
-      }, 200);
+      }, 300);
     }
-    return () => {};
   }, [open]);
   return (
     <>
@@ -64,9 +64,7 @@ const Modal = ({ children, closeModal, open = false, position = "left" }) => {
           position: fixed;
           top: 0;
           height: 100%;
-          width: 90%;
-          background-color: #fff;
-          border: 0.5px solid #eee;
+
           display: flex;
           align-items: center;
           justify-content: center;
@@ -77,7 +75,10 @@ const Modal = ({ children, closeModal, open = false, position = "left" }) => {
 
         .content.right,
         .content.left {
+          width: 90%;
           max-width: 350px;
+          background-color: #fff;
+          border: 0.5px solid #eee;
         }
         .modal.animate .content.right,
         .modal.animate .content.left {
@@ -88,13 +89,15 @@ const Modal = ({ children, closeModal, open = false, position = "left" }) => {
           transform: translateX(-100%);
         }
         .content.right {
-          max-width: 400px;
           right: 0;
           transform: translateX(100%);
         }
 
         .content.center {
+          width: 70%;
+
           left: 50%;
+          background: transparent;
           transform: translate(-50%, 100%);
         }
         .modal.animate .content.center {

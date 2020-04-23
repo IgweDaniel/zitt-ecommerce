@@ -1,77 +1,85 @@
-import Layout from "../components/layout.js";
-import Router, { useRouter } from "next/router";
+import Layout from "../../components/layout.js";
+import Router, { withRouter } from "next/router";
 import Link from "next/link";
 
-import { products, categories } from "../fakedata.js";
-import ProductItem from "../components/productItem.js";
+import { products, categories } from "../../fakedata.js";
+import ProductItem from "../../components/productItem.js";
 import { FiFilter, FiChevronDown } from "react-icons/fi";
-import Modal from "../components/modal.js";
-import Filter from "../components/filter.js";
+import Modal from "../../components/modal.js";
+import Filter from "../../components/filter.js";
 import { useState, useEffect } from "react";
-import { ShopBannerIcon } from "../components/svgIcons.js";
-import { useUpdateEffect } from "../hooks/index.js";
+import { ShopBannerIcon } from "../../components/svgIcons.js";
+import { useUpdateEffect } from "../../hooks/index.js";
+import QuickProduct from "../../components/quickProduct.js";
 
 const DEFAULT_PRICE = [20, 40];
 const DEFAULT_CATEGORY = "all";
 const DEFAULT_SIZE = "all";
-const Shop = () => {
-  const router = useRouter();
-  const query = router.query;
+const Shop = ({ router }) => {
+  const {
+    query: {
+      category = DEFAULT_CATEGORY,
+      minprice = DEFAULT_PRICE[0],
+      maxprice = DEFAULT_PRICE[1],
+      size = DEFAULT_SIZE,
+    },
+  } = router;
 
   const [filterOpen, setfilterOpen] = useState(false);
-  const [price, setPrice] = useState(DEFAULT_PRICE);
 
-  const [category, setCategory] = useState(DEFAULT_CATEGORY);
-  const [size, setSize] = useState(DEFAULT_SIZE);
+  const [filterprice, setFilterPrice] = useState(DEFAULT_PRICE);
 
-  const updatePrice = (price) => setPrice(price);
-  const updateSize = (size) => setSize(size);
-  const updateCategory = (category) => setCategory(category);
+  const [filtersize, setFilterSize] = useState(DEFAULT_SIZE);
+
+  const updatePrice = (price) => setFilterPrice(price);
+  const updateSize = (size) => setFilterSize(size);
+
+  const [productId, setProductID] = useState(null);
+  const viewProduct = (id) => setProductID(id),
+    closeProduct = () => setProductID(null);
 
   function handleFilterState() {
     setfilterOpen((state) => !state);
   }
 
-  function updateShop() {
-    const query = { minprice: price[0], maxprice: price[1], category, size };
-    if (price[0] == DEFAULT_PRICE[0] && price[1] == DEFAULT_PRICE[1]) {
-      delete query["maxprice"];
-      delete query["minprice"];
+  useUpdateEffect(() => {
+    const querystring = `?minprice=${filterprice[0]}&maxprice=${filterprice[1]}&size=${size}`;
+    router.push(`/shop/${category}${querystring}`, undefined, {
+      shallow: true,
+    });
+  }, [filterprice]);
+
+  useUpdateEffect(() => {
+    const querystring = `?minprice=${minprice}&maxprice=${maxprice}&size=${filtersize}`;
+    router.push(`/shop/${category}${querystring}`, undefined, {
+      shallow: true,
+    });
+  }, [filtersize]);
+
+  useEffect(() => {
+    if (router.query["category"]) {
+      console.log("fetching");
     }
-    if (category.toLocaleLowerCase() == DEFAULT_CATEGORY)
-      delete query["category"];
-    if (size.toLocaleUpperCase() == DEFAULT_SIZE) delete query["size"];
-
-    // Router.push({
-    //   pathname: "/shop",
-    //   query,
-    // });
-    router.push("/shop/", undefined, { shallow: true });
-  }
-  useEffect(() => {
-    updateShop();
-  }, [price]);
-
-  useEffect(() => {
-    updateShop();
-  }, [category]);
-
-  useEffect(() => {
-    updateShop();
-  }, [size]);
-
+  }, [router.query]);
   return (
     <Layout>
       <main>
         <Modal open={filterOpen} closeModal={handleFilterState}>
           <Filter
-            price={price}
+            price={[minprice, maxprice]}
             size={size}
             category={category}
-            updateSize={updateSize}
-            updateCategory={updateCategory}
-            updatePrice={updatePrice}
+            updateSizeFilter={updateSize}
+            updatePriceFilter={updatePrice}
           />
+        </Modal>
+
+        <Modal
+          open={productId ? true : false}
+          position="center"
+          closeModal={closeProduct}
+        >
+          <QuickProduct id={productId} />
         </Modal>
 
         <div className="banner">
@@ -118,7 +126,7 @@ const Shop = () => {
           <div className="products">
             {products.map((product) => (
               <div className="item" key={product.id}>
-                <ProductItem {...product} />
+                <ProductItem {...product} viewProduct={viewProduct} />
               </div>
             ))}
           </div>
@@ -217,4 +225,4 @@ const Shop = () => {
   );
 };
 
-export default Shop;
+export default withRouter(Shop);
