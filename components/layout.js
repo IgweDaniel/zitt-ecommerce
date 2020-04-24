@@ -109,12 +109,12 @@ const Layout = ({ page = "Home", ...props }) => {
           color: inherit;
         }
         button {
-          background-color: #000;
+          background-color: #ef8e74;
           color: #fff;
           border: none;
           box-shadow: none;
           height: 40px;
-          font-family: "Catamaran";
+          min-width: 200px;
           padding: 0 12px;
           margin: 10px 0;
           font-size: 15px;

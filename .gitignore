@@ -19,8 +19,10 @@
 # misc
 .DS_Store
 rt.css
-/.vscode
 
+/.vscode/
+/.vscode
+.vscode
 
 # debug
 npm-debug.log*

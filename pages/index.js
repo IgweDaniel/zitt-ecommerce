@@ -2,6 +2,7 @@ import Layout from "../components/layout.js";
 
 import { useViewport } from "../hooks/";
 import { categories } from "../fakedata.js";
+import Link from "next/link";
 
 const Home = () => {
   return (
@@ -13,11 +14,13 @@ const Home = () => {
         </div>
 
         <div className="showcase">
-          {categories.map(({ img, id, name }) => (
-            <div className="showcase-item" key={id}>
-              <img src={img} alt="" />
-              <span>{name}</span>
-            </div>
+          {categories.map(({ img, id, name, link }) => (
+            <Link href="/shop/[category]" as={link}>
+              <div className="showcase-item" key={id}>
+                <img src={img} alt="" />
+                <span>{name}</span>
+              </div>
+            </Link>
           ))}
         </div>
 

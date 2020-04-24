@@ -10,7 +10,11 @@ const QuickProduct = ({ id }) => {
       qpref.current.classList.add("open");
       setTimeout(() => {
         qpref.current.classList.add("animate");
-      }, 500);
+      }, 1000);
+      qpref.current.addEventListener("transitionend", () => {
+        qpref.current.querySelector(".preview").style.flexBasis = "50%";
+        qpref.current.querySelector(".preview").style.width = "50%";
+      });
     }
   }, [id]);
 
@@ -40,31 +44,34 @@ const QuickProduct = ({ id }) => {
             width: 100% !important;
             transition: all 0.5s ease-in-out;
           }
+
           .quick-products.open .content {
             display: block !important;
           }
           .quick-products.animate .content {
             opacity: 1;
             transition: opacity 0.5s ease-in-out 0.5s;
+            flex-basis: 50% !important;
+            width: 50% !important;
           }
           .quick-products {
             height: 80%;
-            width: 400px;
+            width: 300px;
+            flex-shrink: 0;
             overflow: hidden;
             display: flex;
             align-items: center;
             background-color: #fff;
             border: 0.5px solid #eee;
-            flex-shrink: 0;
             transition: all 0.5s ease-in-out;
           }
 
           .preview {
             flex: 1;
-            flex-shrink: 0;
-            width: 30%;
             height: 100%;
-            min-width: 300px;
+            width: 300px;
+            flex-shrink: 0;
+            flex-basis: 300px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -78,15 +85,16 @@ const QuickProduct = ({ id }) => {
           }
 
           .content {
-            flex: 1;
             flex-shrink: 0;
             height: 100%;
-            width: 50%;
+            flex-basis: 0px;
+            width: 0px;
+            flex-shrink: 0;
             position: relative;
             padding: 10px;
-            display: none;
             opacity: 0;
             transition: opacity 0.5s ease-in-out 0.5s;
+            display: none;
           }
           .content .name {
             margin: 20px 0;
@@ -104,9 +112,8 @@ const QuickProduct = ({ id }) => {
           }
           .content button {
             position: absolute;
-            bottom: 0 !important;
-            width: 95% !important;
-            background-color: #ef8e74 !important;
+            bottom: 0;
+            width: 95%;
           }
           .wrapper {
             width: 65%;

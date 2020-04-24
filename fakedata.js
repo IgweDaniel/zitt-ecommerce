@@ -1,10 +1,10 @@
 export const products = [
   {
     id: 1,
-    name: "Oversized Nylon Sweatshirt",
+    name: "Ecru Overshirt",
     images: [
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/5983760398347411_03.jpg",
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/5983760398347411_01.jpg",
+      "https://images.topman.com/i/TopMan/TM83O13UECR_M_1.jpg?$w500$&fmt=webp&qlt=80",
+      "https://images.topman.com/i/TopMan/TM83O13UECR_F_1.jpg?$w500$&fmt=webp&qlt=80",
     ],
     rating: 6,
     price: 12,
@@ -13,10 +13,10 @@ export const products = [
   },
   {
     id: 2,
-    name: "Rag & Bone Beck Coat",
+    name: "Smart Terrence Harrington Check Jacket",
     images: [
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/Beck-Coat-01.jpg",
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/Beck-Coat-04-920x1140.jpg",
+      "https://images.topman.com/i/TopMan/TM64K03UMUL_M_1.jpg?$w500$&fmt=webp&qlt=80",
+      "https://images.topman.com/i/TopMan/TM64K03UMUL_F_1.jpg?$w500$&fmt=webp&qlt=80",
     ],
     rating: 6,
     price: 12,
@@ -26,8 +26,8 @@ export const products = [
     id: 3,
     name: "Folk Striped Slub Cotton-Jersey T-Shirt",
     images: [
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/4146401443863639_01.jpg",
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/4146401443863639_02-920x1139.jpg",
+      "https://images.topman.com/i/TopMan/TM71T17VNAV_M_1.jpg?$w500$&fmt=webp&qlt=80",
+      "https://images.topman.com/i/TopMan/TM71T17VNAV_F_1.jpg?$w500$&fmt=webp&qlt=80",
     ],
     rating: 5,
     price: 40,
@@ -35,10 +35,10 @@ export const products = [
   },
   {
     id: 4,
-    name: "Faux Shearling Jacket With Contrast Detail",
+    name: "BIG & TALL 2 Piece Burgundy Skinny Fit Suit With Notch Lapels",
     images: [
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/1569587715268-920x1140.jpg",
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/15695877152611.jpg",
+      "https://images.topman.com/i/TopMan/BUNDLE_87J02TBRG87T02TBRG_M_1.jpg?$w500$&fmt=webp&qlt=80",
+      "https://images.topman.com/i/TopMan/BUNDLE_87J02TBRG87T02TBRG_F_1.jpg?$w500$&fmt=webp&qlt=80",
     ],
     rating: 6,
     price: 12,
@@ -46,10 +46,11 @@ export const products = [
   },
   {
     id: 5,
-    name: "Basic Short Sleeve T-shirt",
+    name: "Brown Mini Check Tapered Trousers",
     images: [
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/5244357507_2_1_8_1.jpg",
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/5244357507_2_1_8_5-920x1140.jpg",
+      //https://images.topman.com/i/TopMan/TM68F83TBRN_D_1.jpg?$w1300$&fmt=webp&qlt=80
+      "https://images.topman.com/i/TopMan/TM68F83TBRN_M_1.jpg?$w500$&fmt=webp&qlt=80",
+      "https://images.topman.com/i/TopMan/TM68F83TBRN_C_1.jpg?$w500$&fmt=webp&qlt=80",
     ],
     rating: 6,
     price: 12,
@@ -57,10 +58,10 @@ export const products = [
   },
   {
     id: 6,
-    name: "Cropped Pointelle Sweater",
+    name: "Floral Camouflage Print Slim Shirt",
     images: [
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/org-a.jpg",
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/org-b-920x1140.jpg",
+      "https://images.topman.com/i/TopMan/TM84B16TMUL_F_1.jpg?$w500$&fmt=webp&qlt=80",
+      "https://images.topman.com/i/TopMan/TM84B16TMUL_F_1.jpg?$w500$&fmt=webp&qlt=80",
     ],
     rating: 6,
     price: 12,
@@ -68,10 +69,10 @@ export const products = [
   },
   {
     id: 7,
-    name: "Oversized Cotton-Blend Shell Bomber Jacket",
+    name: "Stone Marl Roll Neck Jumper",
     images: [
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/bomber01.jpg",
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/bomber02-1-920x1140.jpg",
+      "https://images.topman.com/i/TopMan/TM81A01SSTN_M_1.jpg?$w500$&fmt=webp&qlt=80",
+      "https://images.topman.com/i/TopMan/TM81A01SSTN_F_1.jpg?$w500$&fmt=webp&qlt=80",
     ],
     rating: 6,
     price: 12,
@@ -79,10 +80,10 @@ export const products = [
   },
   {
     id: 8,
-    name: "Pouch Pocket Jacket",
+    name: "Honey Brown 70s Square Sunglasses",
     images: [
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/1569845524571_01-920x1140.jpg",
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/1569845524571_02-920x1140.jpg",
+      "https://images.topman.com/i/TopMan/TM56S25BBRN_M_1.jpg?$w500$&fmt=webp&qlt=80",
+      "https://images.topman.com/i/TopMan/TM56S25BBRN_F_1.jpg?$w500$&fmt=webp&qlt=80",
     ],
     rating: 6,
     price: 12,
@@ -90,10 +91,10 @@ export const products = [
   },
   {
     id: 9,
-    name: "Camouflage Hooded Cotton Jacket",
+    name: "CHAMPION Black Woven Cap",
     images: [
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/14203267_2-920x1139.jpg",
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/14203267_1.jpg",
+      "https://images.topman.com/i/TopMan/TM56J06BBLK_M_1.jpg?$w500$&fmt=webp&qlt=80",
+      "https://images.topman.com/i/TopMan/TM56J06BBLK_F_1.jpg?$w500$&fmt=webp&qlt=80",
     ],
     rating: 6,
     price: 12,
@@ -101,10 +102,11 @@ export const products = [
   },
   {
     id: 10,
-    name: "Oversized Hoodie",
+    name:
+      "HARRY BROWN Blue Slim Check Single Breasted Suit Blazer With Notch Lapels",
     images: [
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/9596323800_2_5_8_07.jpg",
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/9596323800_2_5_8_09.jpg",
+      "https://images.topman.com/i/TopMan/BUNDLE_87J44UBLE87T44UBLE_M_1.jpg?$w500$&fmt=webp&qlt=80",
+      "https://images.topman.com/i/TopMan/BUNDLE_87J44UBLE87T44UBLE_C_1.jpg?$w500$&fmt=webp&qlt=80",
     ],
     rating: 6,
     price: 12,
@@ -112,10 +114,10 @@ export const products = [
   },
   {
     id: 11,
-    name: "Dyed Shell PrimaLoft Hooded Field Jacket",
+    name: "Mid Wash Rip Flap Stretch Skinny Jeans",
     images: [
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/stone-island-jacket-a.jpg",
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/stone-island-jacket-b-920x1139.jpg",
+      "https://images.topman.com/i/TopMan/TM69F09TMST_F_1.jpg?$w500$&fmt=webp&qlt=80",
+      "https://images.topman.com/i/TopMan/TM69F09TMST_M_1.jpg?$w500$&fmt=webp&qlt=80",
     ],
     rating: 6,
     price: 12,
@@ -123,10 +125,10 @@ export const products = [
   },
   {
     id: 12,
-    name: "Retro Modern Sports Jacket",
+    name: "HUDSON Navy Suede Parker Slip On Shoes",
     images: [
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/20730576_1.jpg",
-      "https://shopkeeper.wp-theme.design/wp-content/uploads/20730576_4-920x1139.jpg",
+      "https://images.topman.com/i/TopMan/TM97W74SNAV_M_1.jpg?$w500$&fmt=webp&qlt=80",
+      "https://images.topman.com/i/TopMan/TM97W74SNAV_F_1.jpg?$w500$&fmt=webp&qlt=80",
     ],
     rating: 6,
     price: 12,
@@ -138,31 +140,31 @@ export const categories = [
   {
     id: 1,
     name: "SUITS",
-    link: "",
+    link: "/shop/all",
 
     img:
-      "https://images.topman.com/i/TopMan/TM87J04RBLE_M_1.jpg?$w1300$&fmt=webp&qlt=80",
+      "https://images.topman.com/i/TopMan/TM87J04RBLE_M_1.jpg?$w1000$&fmt=webp&qlt=80",
   },
   {
     id: 2,
     name: "BASICS",
     link: "",
     img:
-      "https://images.topman.com/i/TopMan/TM76L13TBLE_M_1.jpg?$w1300$&fmt=webp&qlt=80",
+      "https://images.topman.com/i/TopMan/TM76L13TBLE_M_1.jpg?$w1000$&fmt=webp&qlt=80",
   },
   {
     id: 3,
     name: "HATS",
     link: "",
     img:
-      "https://images.topman.com/i/TopMan/TM56J84BGRN_M_1.jpg?$w1300$&fmt=webp&qlt=80",
+      "https://images.topman.com/i/TopMan/TM56J84BGRN_M_1.jpg?$w1000$&fmt=webp&qlt=80",
   },
   {
     id: 6,
     name: "TROUSERS",
     link: "",
     img:
-      "https://images.topman.com/i/TopMan/TM68F93TBLE_F_1.jpg?$w1300$&fmt=webp&qlt=80",
+      "https://images.topman.com/i/TopMan/TM68F93TBLE_F_1.jpg?$w1000$&fmt=webp&qlt=80",
   },
 
   {
@@ -170,83 +172,16 @@ export const categories = [
     name: "SHORTS",
     link: "",
     img:
-      "https://images.topman.com/i/TopMan/TM76G14TOGE_M_1.jpg?$w1300$&fmt=webp&qlt=80",
+      "https://images.topman.com/i/TopMan/TM76G14TOGE_M_1.jpg?$w1000$&fmt=webp&qlt=80",
   },
   {
     id: 5,
     name: "SHIRTS",
     link: "",
     img:
-      "https://images.topman.com/i/TopMan/TM83D14UBLK_M_1.jpg?$w1300$&fmt=webp&qlt=80",
+      "https://images.topman.com/i/TopMan/TM83D14UBLK_M_1.jpg?$w1000$&fmt=webp&qlt=80",
   },
 ];
-// export const categories = [
-//   {
-//     id: 1,
-//     name: "BODYSUITS",
-//     link: "",
-//     img:
-//       "https://shopkeeper.wp-theme.design/wp-content/uploads/slide03blonde-1.jpg",
-//   },
-//   {
-//     id: 2,
-//     name: "BASICS",
-//     link: "",
-//     img:
-//       "https://shopkeeper.wp-theme.design/wp-content/uploads/categories-grid-02.jpg",
-//   },
-//   {
-//     id: 3,
-//     name: "SALES",
-//     link: "",
-//     img:
-//       "https://shopkeeper.wp-theme.design/wp-content/uploads/categories-grid-03.jpg",
-//   },
-//   {
-//     id: 6,
-//     name: "TOPS",
-//     link: "",
-//     img:
-//       "https://shopkeeper.wp-theme.design/wp-content/uploads/categories-grid-06.jpg",
-//   },
-
-//   {
-//     id: 4,
-//     name: "BLOUSES",
-//     link: "",
-//     img:
-//       "https://shopkeeper.wp-theme.design/wp-content/uploads/categories-grid-04.jpg",
-//   },
-//   {
-//     id: 5,
-//     name: "PARTY COLLECTION",
-//     link: "",
-//     img:
-//       "https://shopkeeper.wp-theme.design/wp-content/uploads/categories-grid-05.jpg",
-//   },
-
-//   {
-//     id: 7,
-//     name: "SKIRT AND BLOUSES",
-//     link: "",
-//     img:
-//       "https://shopkeeper.wp-theme.design/wp-content/uploads/categories-grid-07.jpg",
-//   },
-//   {
-//     id: 8,
-//     name: "JUMPERS",
-//     link: "",
-//     img:
-//       "https://shopkeeper.wp-theme.design/wp-content/uploads/categories-grid-08.jpg",
-//   },
-//   {
-//     id: 9,
-//     name: "DRESSES",
-//     link: "",
-//     img:
-//       "https://shopkeeper.wp-theme.design/wp-content/uploads/categories-grid-09.jpg",
-//   },
-// ];
 
 export const shopcategories = [
   { label: "All Categories", name: "all" },

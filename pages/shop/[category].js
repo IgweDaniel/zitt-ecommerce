@@ -168,11 +168,12 @@ const Shop = ({ router }) => {
           display: grid;
           grid-template-columns: 1fr 1fr;
           align-items: center;
-          gap: 10px;
+          column-gap: 10px;
+          row-gap: 20px;
           justify-content: center;
         }
         .products .item {
-          height: 250px;
+          height: 350px;
         }
         section .meta {
           height: 70px;
@@ -209,7 +210,7 @@ const Shop = ({ router }) => {
             grid-template-columns: repeat(4, 1fr);
           }
           .products .item {
-            height: 350px;
+            height: 450px;
           }
           section .meta {
             align-items: center;

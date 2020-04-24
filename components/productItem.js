@@ -59,7 +59,7 @@ const ProductItem = ({ images, id, name, price, viewProduct }) => {
 
         .image-container {
           position: relative;
-          height: 80%;
+          height: 70%;
           width: 100%;
         }
 
@@ -71,17 +71,17 @@ const ProductItem = ({ images, id, name, price, viewProduct }) => {
           height: 100%;
           width: 100%;
           object-fit: cover;
-          object-position: center;
+          object-position: top;
         }
         .image-container img:nth-of-type(1) {
           z-index: 2;
         }
 
         .info {
+          height: 30%;
           font-weight: 100;
           width: 100%;
           display: flex;
-
           justify-content: center;
           flex-direction: column;
         }
@@ -100,6 +100,12 @@ const ProductItem = ({ images, id, name, price, viewProduct }) => {
         }
 
         @media (min-width: 769px) {
+          .image-container {
+            height: 80%;
+          }
+          .info {
+            height: 20%;
+          }
           .action {
             top: 80%;
             left: 50%;
@@ -107,18 +113,18 @@ const ProductItem = ({ images, id, name, price, viewProduct }) => {
             transform: translate(-50%, -120%);
             z-index: 2;
             background-color: #fff;
-            width: 35px;
-            height: 30px;
+            width: 40px;
+            height: 20px;
             display: flex;
             transition: all 0.2s ease-in-out;
             opacity: 0;
             justify-content: center;
             align-items: center;
             border-radius: 2px;
+            box-shadow: 0px 9px 20px -1px rgba(0, 0, 0, 0.16);
           }
           .action.animate {
             opacity: 1;
-
             transition: all 0.2s ease-in-out;
           }
         }
