@@ -2,11 +2,12 @@ import React, { useRef } from "react";
 import { products } from "../fakedata";
 import { useUpdateEffect } from "../hooks";
 
-const QuickProduct = ({ id }) => {
-  const product = products.find((prod) => prod.id == id);
+const QuickProduct = ({ id: product }) => {
+  // const product = products.find((prod) => prod.id == id);
+
   const qpref = useRef(null);
   useUpdateEffect(() => {
-    if (id) {
+    if (product) {
       qpref.current.classList.add("open");
       setTimeout(() => {
         qpref.current.classList.add("animate");
@@ -16,13 +17,13 @@ const QuickProduct = ({ id }) => {
         qpref.current.querySelector(".preview").style.width = "50%";
       });
     }
-  }, [id]);
+  }, [product]);
 
   return product ? (
     <>
       <div className="quick-products" ref={qpref}>
         <div className="preview">
-          <img src={product.images[0]} alt="" />
+          <img src={`https://${product.images[0].fields.file.url}`} alt="" />
         </div>
         <div className="content">
           <div className="wrapper">

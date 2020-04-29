@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { categories, shopcategories } from "../fakedata";
+// import { categories, shopcategories } from "../fakedata";
 import { CircleIcon, CircleDotIcon } from "./svgIcons";
 import { Range } from "rc-slider";
 import Link from "next/link";
@@ -38,6 +38,7 @@ const Filter = ({
   size: activeSize,
   updateSizeFilter,
   updatePriceFilter,
+  availableCategories: shopcategories,
 }) => {
   const [price, setPrice] = useState(null);
 
@@ -46,17 +47,17 @@ const Filter = ({
       <div className="filter-section category">
         <h5 className="title">Product Categories</h5>
         <ul>
-          {shopcategories.map((cat, i) => (
+          {shopcategories.map((category, i) => (
             <li key={i}>
               <span className="icon">
-                {activeCategory == cat.name ? (
-                  <CircleDotIcon fill="#f57e60" size={14} />
+                {activeCategory == category.name ? (
+                  <CircleDotIcon fill="#f57e60" size={13} />
                 ) : (
-                  <CircleIcon size={14} />
+                  <CircleIcon size={13} />
                 )}
               </span>
-              <Link href="/shop/[category]" as={`/shop/${cat.name}`}>
-                <span className="category-name">{cat.label}</span>
+              <Link href={`/shop/${category.name}`}>
+                <span className="category-name">{category.label}</span>
               </Link>
             </li>
           ))}
@@ -66,6 +67,7 @@ const Filter = ({
         <h5 className="title">Filter by Price</h5>
         <div className="price-slider ">
           <Range
+            max={150}
             allowCross={false}
             trackStyle={[{ backgroundColor: "#f57e60" }]}
             handleStyle={[
@@ -116,6 +118,7 @@ const Filter = ({
         }
         .filter-section .title {
           margin: 10px 0;
+          text-transform: uppercase;
         }
         .price-slider {
           width: 100%;
@@ -133,7 +136,9 @@ const Filter = ({
         .filter-section.category ul li .category-name {
           margin: 5px 5px;
           font-family: "Catamaran";
+
           font-weight: bold;
+          font-variant: small-caps;
         }
         .icon {
           display: flex;
@@ -150,7 +155,14 @@ const Filter = ({
           cursor: pointer;
           margin: 10px 5px 0 0;
           border: 0.5px solid #888;
-          padding: 10px;
+          font-family: "Catamaran";
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: bold;
+          font-variant: small-caps;
         }
 
         .filter-section.price .price-text {

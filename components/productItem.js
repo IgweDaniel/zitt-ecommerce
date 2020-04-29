@@ -1,7 +1,7 @@
 import React, { useRef, Fragment } from "react";
 import { ViewIcon } from "./svgIcons";
 
-const ProductItem = ({ images, id, name, price, viewProduct }) => {
+const ProductItem = ({ viewProduct, product }) => {
   const displayRef = useRef(null);
   const actionRef = useRef(null);
   function handleHover() {
@@ -20,20 +20,20 @@ const ProductItem = ({ images, id, name, price, viewProduct }) => {
         onMouseLeave={handleLeave}
       >
         <div className="image-container" ref={displayRef}>
-          {images.map((url, i) => (
+          {product.images.slice(0, 2).map((image, i) => (
             <Fragment key={i}>
-              <img src={url} />
+              <img src={`https://${image.fields.file.url}`} />
             </Fragment>
           ))}
         </div>
         <div className="info">
-          <span className="name">{name}</span>
-          <span className="price">{price}$</span>
+          <span className="name">{product.name}</span>
+          <span className="price">{product.price}$</span>
         </div>
         <div
           className="action no-mobile"
           ref={actionRef}
-          onClick={() => viewProduct(id)}
+          onClick={() => viewProduct(product)}
         >
           <div className="icon">
             <ViewIcon size={15} />
@@ -75,6 +75,9 @@ const ProductItem = ({ images, id, name, price, viewProduct }) => {
         }
         .image-container img:nth-of-type(1) {
           z-index: 2;
+        }
+        .image-container img:nth-of-type(2) {
+          z-index: 1;
         }
 
         .info {

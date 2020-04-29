@@ -2,20 +2,30 @@ import Layout from "../../components/layout.js";
 import Router, { withRouter } from "next/router";
 import Link from "next/link";
 
-import { products, categories } from "../../fakedata.js";
+import useSWR, { useSWRPages } from "swr";
+import * as contentful from "contentful";
+
 import ProductItem from "../../components/productItem.js";
 import { FiFilter, FiChevronDown } from "react-icons/fi";
 import Modal from "../../components/modal.js";
 import Filter from "../../components/filter.js";
 import { useState, useEffect } from "react";
-import { ShopBannerIcon } from "../../components/svgIcons.js";
-import { useUpdateEffect } from "../../hooks/index.js";
+import { ShopBannerIcon, TrouserIcon } from "../../components/svgIcons.js";
+import { useUpdateEffect, useOnScreen } from "../../hooks/index.js";
 import QuickProduct from "../../components/quickProduct.js";
+import Spinner from "../../components/spinner.js";
+import CatalougeItem from "../../components/catalougeItem.js";
 
-const DEFAULT_PRICE = [20, 40];
+const DEFAULT_PRICE = [0, 150];
 const DEFAULT_CATEGORY = "all";
 const DEFAULT_SIZE = "all";
-const Shop = ({ router }) => {
+const PRODUCT_LIMIT = 4;
+const client = contentful.createClient({
+  space: "<contentful-space-id>",
+  accessToken: "<contentful-acess-token>",
+});
+
+const Shop = ({ router, availableCategories }) => {
   const {
     query: {
       category = DEFAULT_CATEGORY,
@@ -27,12 +37,10 @@ const Shop = ({ router }) => {
 
   const [filterOpen, setfilterOpen] = useState(false);
 
-  const [filterprice, setFilterPrice] = useState(DEFAULT_PRICE);
-
-  const [filtersize, setFilterSize] = useState(DEFAULT_SIZE);
-
-  const updatePrice = (price) => setFilterPrice(price);
-  const updateSize = (size) => setFilterSize(size);
+  const [filterprice, setFilterPrice] = useState(DEFAULT_PRICE),
+    [filtersize, setFilterSize] = useState(DEFAULT_SIZE),
+    updatePrice = (price) => setFilterPrice(price),
+    updateSize = (size) => setFilterSize(size);
 
   const [productId, setProductID] = useState(null);
   const viewProduct = (id) => setProductID(id),
@@ -56,11 +64,72 @@ const Shop = ({ router }) => {
     });
   }, [filtersize]);
 
+  const loader = React.useRef(null);
+  const isOnScreen = useOnScreen(loader, "40px");
+
+  async function fetchProducts(offset) {
+    const { id } =
+      category == DEFAULT_CATEGORY
+        ? ""
+        : availableCategories.find((cat) => cat.name == category);
+
+    const entries = await client.getEntries({
+      limit: PRODUCT_LIMIT,
+      links_to_entry: id,
+      skip: offset,
+      "fields.price[lte]": maxprice,
+      content_type: "product",
+      "fields.price[gte]": minprice,
+      include: 2,
+    });
+    console.log(minprice, maxprice);
+
+    return entries;
+  }
+  const { pages, isReachingEnd, loadMore } = useSWRPages(
+    "product/2",
+    ({ offset, withSWR }) => {
+      const { data, error } = withSWR(
+        useSWR("products" + offset, async () => fetchProducts(offset || 0))
+      );
+
+      if (error) {
+        console.error(error);
+        return (
+          <>
+            <h3 className="muted-info">error loading products</h3>
+            <style jsx>{`
+              .muted-info {
+                text-align: center;
+                width: 100%;
+                height: 40px;
+                margin: 20px 0;
+                font-family: "Catamaran";
+                text-transform: capitalize;
+                color: #888;
+              }
+            `}</style>
+          </>
+        );
+      }
+      if (!data) return <Spinner />;
+      if (data.items.length == 0) return null;
+
+      return <CatalougeItem products={data} viewProduct={viewProduct} />;
+    },
+    (SWR, index) => {
+      if (index * PRODUCT_LIMIT >= SWR.data.total) return null;
+      return (index + 1) * PRODUCT_LIMIT;
+    },
+    []
+  );
+
   useEffect(() => {
-    if (router.query["category"]) {
-      console.log("fetching");
+    if (isOnScreen) {
+      loadMore();
     }
-  }, [router.query]);
+  }, [isOnScreen]);
+
   return (
     <Layout>
       <main>
@@ -71,6 +140,7 @@ const Shop = ({ router }) => {
             category={category}
             updateSizeFilter={updateSize}
             updatePriceFilter={updatePrice}
+            availableCategories={availableCategories}
           />
         </Modal>
 
@@ -83,26 +153,26 @@ const Shop = ({ router }) => {
         </Modal>
 
         <div className="banner">
-          <div className="icon">
-            <ShopBannerIcon size={75} />
-          </div>
-          <ul className="shop-links">
-            <li>
-              <Link href="/store/summer">
-                <a>#SUMMER</a>
-              </Link>
-            </li>
-
-            <li>
-              <Link href="/store/jackets">
-                <a>JACKETS</a>
-              </Link>
-            </li>
-            <li>HOODIES</li>
-            <li>TROUSER</li>
-            <li>ACCESORIES</li>
-            <li>SHOES</li>
-          </ul>
+          {category == DEFAULT_CATEGORY ? (
+            <>
+              <div className="icon">
+                <ShopBannerIcon size={75} />
+              </div>
+              <ul className="shop-links">
+                {availableCategories.map((category) =>
+                  category.name !== DEFAULT_CATEGORY ? (
+                    <li key={category.id}>
+                      <Link href={`/shop/${category.name}`}>
+                        <a>{category.label.toUpperCase()}</a>
+                      </Link>
+                    </li>
+                  ) : null
+                )}
+              </ul>
+            </>
+          ) : (
+            <h1 className="banner-title">{category}</h1>
+          )}
         </div>
 
         <section>
@@ -114,7 +184,7 @@ const Shop = ({ router }) => {
               <h6>FILTER</h6>
             </div>
             <div className="info  no-mobile">
-              <h6>HOME / THE SHOP</h6>
+              <h6>HOME / THE SHOP/ {category.toUpperCase()}</h6>
             </div>
             <div className="action dropdown">
               <h6>SORT BY LASTEST</h6>
@@ -123,20 +193,18 @@ const Shop = ({ router }) => {
               </span>
             </div>
           </div>
-          <div className="products">
-            {products.map((product) => (
-              <div className="item" key={product.id}>
-                <ProductItem {...product} viewProduct={viewProduct} />
-              </div>
-            ))}
+          <div className="catalouge">{pages}</div>
+          <div className="footer">
+            {isReachingEnd ? (
+              <h4 className="content">NO MORE ITEMS AVAILABLE.</h4>
+            ) : (
+              <div className="loader" ref={loader}></div>
+            )}
           </div>
         </section>
       </main>
 
-      <style jsx global>{``}</style>
       <style jsx>{`
-        main {
-        }
         .banner {
           display: flex;
           align-items: center;
@@ -154,27 +222,22 @@ const Shop = ({ router }) => {
         }
         .banner ul li {
           text-align: center;
-          flex-basis: 40px;
+          flex-basis: 30px;
           font-size: 14px;
           margin: 10px;
           padding-bottom: 5px;
           border-bottom: 1px solid #eee;
         }
+
+        .banner-title {
+          text-transform: capitalize;
+          font-family: "Catamaran";
+        }
         section {
           padding: 0 10px;
-          margin: 50px auto;
+          margin: 20px auto;
         }
-        .products {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          align-items: center;
-          column-gap: 10px;
-          row-gap: 20px;
-          justify-content: center;
-        }
-        .products .item {
-          height: 350px;
-        }
+
         section .meta {
           height: 70px;
           display: grid;
@@ -186,17 +249,33 @@ const Shop = ({ router }) => {
           align-items: center;
           cursor: pointer;
         }
+
         section .meta .action .icon {
           display: flex;
           align-items: center;
           justify-content: center;
+        }
+
+        section .footer {
+          display: flex;
+          justify-content: center;
+        }
+
+        section .footer .content {
+          text-align: center;
+          width: 100%;
+          height: 40px;
+          margin: 20px 0;
+          font-family: "Catamaran";
+          text-transform: capitalize;
+          color: #888;
         }
         .dropdown {
           justify-self: right;
         }
         @media (min-width: 769px) {
           .banner h1 {
-            font-size: 72.611px;
+            font-size: 50.611px;
           }
 
           section {
@@ -204,14 +283,6 @@ const Shop = ({ router }) => {
             margin: 50px auto;
           }
 
-          .products {
-            padding: 0;
-            gap: 20px;
-            grid-template-columns: repeat(4, 1fr);
-          }
-          .products .item {
-            height: 450px;
-          }
           section .meta {
             align-items: center;
             grid-template-columns: 80px 1fr 200px;
@@ -226,4 +297,16 @@ const Shop = ({ router }) => {
   );
 };
 
+export async function getServerSideProps(context) {
+  const category = await client.getEntries({
+    content_type: "category",
+  });
+  const categories = category.items.map((item) => {
+    return { name: item.fields.name, label: item.fields.name, id: item.sys.id };
+  });
+  categories.push({ label: "all categories", name: "all", id: "" });
+  return {
+    props: { availableCategories: categories.reverse() }, // will be passed to the page component as props
+  };
+}
 export default withRouter(Shop);

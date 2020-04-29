@@ -15,8 +15,8 @@ const Home = () => {
 
         <div className="showcase">
           {categories.map(({ img, id, name, link }) => (
-            <Link href="/shop/[category]" as={link}>
-              <div className="showcase-item" key={id}>
+            <Link href="/shop/[category]" as={link} key={id}>
+              <div className="showcase-item">
                 <img src={img} alt="" />
                 <span>{name}</span>
               </div>
