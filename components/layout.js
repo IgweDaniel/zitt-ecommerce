@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 import Head from "next/head";
-
 import Router from "next/router";
+
 import NProgress from "nprogress";
 
-import NavBar from "./navBar";
 import { useViewport } from "../hooks";
 
 import { FaTwitter, FaPinterest, FaFacebookSquare } from "react-icons/fa";
-
 import { AiFillInstagram } from "react-icons/ai";
-import Modal from "./modal";
-import Cart from "./quickCart";
+
+import { NavBar } from "./navBar";
+import { Modal } from "./modal";
+import { QuickCart } from "./quickCart";
 
 Router.onRouteChangeStart = (url) => NProgress.start();
 Router.onRouteChangeComplete = () => NProgress.done();
 Router.onRouteChangeError = () => NProgress.done();
 
-const Layout = ({ page = "Home", ...props }) => {
+export const Layout = ({ page = "Home", ...props }) => {
   const { width } = useViewport();
   const [cartOpen, setCartOpen] = useState(false);
 
@@ -51,8 +51,9 @@ const Layout = ({ page = "Home", ...props }) => {
         <div>{props.children}</div>
       </div>
       <Modal position="right" open={cartOpen} closeModal={handleCartState}>
-        <Cart />
+        <QuickCart />
       </Modal>
+
       <footer>
         <ul className="social-icons">
           <li>
@@ -71,6 +72,10 @@ const Layout = ({ page = "Home", ...props }) => {
         <p>&copy; Zitt Stores 2020</p>
       </footer>
       <style jsx global>{`
+        :root {
+          // --themeColor:#ef8e74;
+          --themeColor: #30292f;
+        }
         @font-face {
           font-family: NeueEinstellung;
           src: url("/Nue.woff");
@@ -110,11 +115,12 @@ const Layout = ({ page = "Home", ...props }) => {
         }
         button {
           background-color: #ef8e74;
+          background-color: var(--themeColor);
           color: #fff;
           border: none;
           box-shadow: none;
           height: 40px;
-          min-width: 200px;
+          min-width: 150px;
           padding: 0 12px;
           margin: 10px 0;
           font-size: 15px;
@@ -124,6 +130,8 @@ const Layout = ({ page = "Home", ...props }) => {
           display: flex;
           align-items: center;
           justify-content: center;
+          box-shadow: -1px 3px 13px -2px rgba(0, 0, 0, 0.2);
+          border-radius: 3px;
         }
         .icon {
           align-items: center;
@@ -154,5 +162,3 @@ const Layout = ({ page = "Home", ...props }) => {
     </>
   );
 };
-
-export default Layout;

@@ -6,7 +6,7 @@ import { CartIcon, UserIcon, SearchIcon } from "./svgIcons";
 
 const ICON_SIZE = 20;
 
-const NavBar = ({ color = "#fff", height, events, ...props }) => {
+export const NavBar = ({ color = "#fff", height, events, ...props }) => {
   const navBarRef = useRef(null);
   useEffect(() => {
     window.addEventListener("scroll", updateNavBar);
@@ -59,7 +59,11 @@ const NavBar = ({ color = "#fff", height, events, ...props }) => {
           </li>
 
           <li>
-            <UserIcon size={ICON_SIZE} />
+            <Link href="/my_account">
+              <a>
+                <UserIcon size={ICON_SIZE} />
+              </a>
+            </Link>
           </li>
 
           <li>
@@ -154,5 +158,3 @@ const NavBar = ({ color = "#fff", height, events, ...props }) => {
     </>
   );
 };
-
-export default NavBar;

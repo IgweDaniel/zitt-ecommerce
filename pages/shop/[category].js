@@ -1,31 +1,39 @@
-import Layout from "../../components/layout.js";
-import Router, { withRouter } from "next/router";
+import { useState, useEffect } from "react";
+import { withRouter } from "next/router";
+import Error from "next/error";
 import Link from "next/link";
 
 import useSWR, { useSWRPages } from "swr";
 import * as contentful from "contentful";
 
-import ProductItem from "../../components/productItem.js";
 import { FiFilter, FiChevronDown } from "react-icons/fi";
-import Modal from "../../components/modal.js";
-import Filter from "../../components/filter.js";
-import { useState, useEffect } from "react";
-import { ShopBannerIcon, TrouserIcon } from "../../components/svgIcons.js";
-import { useUpdateEffect, useOnScreen } from "../../hooks/index.js";
-import QuickProduct from "../../components/quickProduct.js";
-import Spinner from "../../components/spinner.js";
-import CatalougeItem from "../../components/catalougeItem.js";
 
-const DEFAULT_PRICE = [0, 150];
+import {
+  Modal,
+  Filter,
+  QuickProduct,
+  Spinner,
+  Layout,
+  CatalougeItem,
+  MutedInfo,
+} from "../../components";
+
+import { ShopBannerIcon } from "../../components/svgIcons.js";
+import { useUpdateEffect, useOnScreen } from "../../hooks/index.js";
+
+const DEFAULT_PRICE = [9, 180];
 const DEFAULT_CATEGORY = "all";
 const DEFAULT_SIZE = "all";
-const PRODUCT_LIMIT = 4;
+const PRODUCT_LIMIT = 8;
 const client = contentful.createClient({
-  space: "<contentful-space-id>",
-  accessToken: "<contentful-acess-token>",
+  space: process.env.contentfulSpaceId,
+  accessToken: process.env.contentfulAccessToken,
 });
 
-const Shop = ({ router, availableCategories }) => {
+const Shop = ({ router, availableCategories, errorCode }) => {
+  if (errorCode) {
+    return <Error statusCode={errorCode} />;
+  }
   const {
     query: {
       category = DEFAULT_CATEGORY,
@@ -72,7 +80,8 @@ const Shop = ({ router, availableCategories }) => {
       category == DEFAULT_CATEGORY
         ? ""
         : availableCategories.find((cat) => cat.name == category);
-
+    let obj = { "fields.sizes[in]": size };
+    if (size == DEFAULT_SIZE) delete obj["fields.sizes[in]"];
     const entries = await client.getEntries({
       limit: PRODUCT_LIMIT,
       links_to_entry: id,
@@ -80,10 +89,9 @@ const Shop = ({ router, availableCategories }) => {
       "fields.price[lte]": maxprice,
       content_type: "product",
       "fields.price[gte]": minprice,
+      ...obj,
       include: 2,
     });
-    console.log(minprice, maxprice);
-
     return entries;
   }
   const { pages, isReachingEnd, loadMore } = useSWRPages(
@@ -94,23 +102,13 @@ const Shop = ({ router, availableCategories }) => {
       );
 
       if (error) {
-        console.error(error);
-        return (
-          <>
-            <h3 className="muted-info">error loading products</h3>
-            <style jsx>{`
-              .muted-info {
-                text-align: center;
-                width: 100%;
-                height: 40px;
-                margin: 20px 0;
-                font-family: "Catamaran";
-                text-transform: capitalize;
-                color: #888;
-              }
-            `}</style>
-          </>
-        );
+        const message =
+          error.name == "TypeError" ? (
+            <MutedInfo text="sorry! no products in this category" />
+          ) : (
+            <MutedInfo text="Error loading products" />
+          );
+        return message;
       }
       if (!data) return <Spinner />;
       if (data.items.length == 0) return null;
@@ -227,6 +225,13 @@ const Shop = ({ router, availableCategories }) => {
           margin: 10px;
           padding-bottom: 5px;
           border-bottom: 1px solid #eee;
+          transition: all 0.3s ease-in-out;
+        }
+
+        .banner ul li:hover {
+          color: #ef8e74;
+          border-bottom: none;
+          transition: all 0.3s ease-in-out;
         }
 
         .banner-title {
@@ -298,15 +303,31 @@ const Shop = ({ router, availableCategories }) => {
 };
 
 export async function getServerSideProps(context) {
-  const category = await client.getEntries({
-    content_type: "category",
-  });
-  const categories = category.items.map((item) => {
-    return { name: item.fields.name, label: item.fields.name, id: item.sys.id };
-  });
+  let category,
+    errorCode = null;
+
+  try {
+    category = await client.getEntries({
+      content_type: "category",
+    });
+  } catch (error) {
+    errorCode = 500;
+    console.log("error", error);
+  }
+
+  const categories = category
+    ? category.items.map((item) => {
+        return {
+          name: item.fields.name,
+          label: item.fields.name,
+          id: item.sys.id,
+        };
+      })
+    : [];
   categories.push({ label: "all categories", name: "all", id: "" });
+
   return {
-    props: { availableCategories: categories.reverse() }, // will be passed to the page component as props
+    props: { errorCode, availableCategories: categories.reverse() }, // will be passed to the page component as props
   };
 }
 export default withRouter(Shop);

@@ -1,7 +1,7 @@
 import React, { useRef, Fragment } from "react";
-import { ViewIcon } from "./svgIcons";
+import { ViewIcon, AddToCart } from "./svgIcons";
 
-const ProductItem = ({ viewProduct, product }) => {
+export const ProductItem = ({ viewProduct, product }) => {
   const displayRef = useRef(null);
   const actionRef = useRef(null);
   function handleHover() {
@@ -30,13 +30,12 @@ const ProductItem = ({ viewProduct, product }) => {
           <span className="name">{product.name}</span>
           <span className="price">{product.price}$</span>
         </div>
-        <div
-          className="action no-mobile"
-          ref={actionRef}
-          onClick={() => viewProduct(product)}
-        >
-          <div className="icon">
+        <div className="action no-mobile" ref={actionRef}>
+          <div className="icon" onClick={() => viewProduct(product)}>
             <ViewIcon size={15} />
+          </div>
+          <div className="icon">
+            <AddToCart size={18} />
           </div>
         </div>
       </div>
@@ -115,15 +114,22 @@ const ProductItem = ({ viewProduct, product }) => {
             position: absolute;
             transform: translate(-50%, -120%);
             z-index: 2;
-            background-color: #fff;
-            width: 40px;
-            height: 20px;
+            padding: 0 1rem;
+            width: 100%;
+            height: 30px;
             display: flex;
             transition: all 0.2s ease-in-out;
             opacity: 0;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
             border-radius: 2px;
+          }
+          .action .icon {
+            width: 20%;
+            max-width: 50px;
+            height: 100%;
+            background-color: #fff;
+
             box-shadow: 0px 9px 20px -1px rgba(0, 0, 0, 0.16);
           }
           .action.animate {
@@ -135,5 +141,3 @@ const ProductItem = ({ viewProduct, product }) => {
     </>
   );
 };
-
-export default ProductItem;

@@ -1,7 +1,7 @@
 import React from "react";
-import ProductItem from "./productItem";
+import { ProductItem } from "./productItem";
 
-const CatalougeItem = ({ products, viewProduct }) => {
+export const CatalougeItem = ({ products, viewProduct }) => {
   return (
     <div className="catalouge-items">
       {products.items.map((product) => (
@@ -36,5 +36,3 @@ const CatalougeItem = ({ products, viewProduct }) => {
     </div>
   );
 };
-
-export default CatalougeItem;

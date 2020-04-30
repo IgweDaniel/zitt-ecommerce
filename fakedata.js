@@ -571,16 +571,17 @@ export const categories = [
     name: "SHORTS",
     link: "",
     img:
-      "https://images.topman.com/i/TopMan/TM76G14TOGE_M_1.jpg?$w1000$&fmt=webp&qlt=80",
+      "https://images.topman.com/i/TopMan/TM33M14SPNK_D_1.jpg?$w1000$&fmt=webp&qlt=80",
   },
   {
     id: 5,
     name: "SHIRTS",
     link: "",
-    // img:
-    //   "https://images.topman.com/i/TopMan/TM83D14UBLK_M_1.jpg?$w1000$&fmt=webp&qlt=80",
+
     img:
-      "https://images.topman.com/i/TopMan/TM83D42UBLK_D_1.jpg?$w1000$&fmt=webp&qlt=80",
+      "https://images.topman.com/i/TopMan/TM71M18AMUL_F_1.jpg?$w1000$&fmt=webp&qlt=80",
+    // img:
+    //   "https://images.topman.com/i/TopMan/TM66P47TRED_D_1.jpg?$w1000$&fmt=webp&qlt=80",
   },
 ];
 

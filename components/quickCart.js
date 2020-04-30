@@ -1,7 +1,7 @@
 import React from "react";
 import { BagIcon } from "./svgIcons";
 
-const Cart = () => {
+export const QuickCart = () => {
   return (
     <>
       <div className="empty cart">
@@ -36,5 +36,3 @@ const Cart = () => {
     </>
   );
 };
-
-export default Cart;

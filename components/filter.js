@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-// import { categories, shopcategories } from "../fakedata";
 import { CircleIcon, CircleDotIcon } from "./svgIcons";
 import { Range } from "rc-slider";
 import Link from "next/link";
@@ -32,7 +31,7 @@ const sizes = [
   },
 ];
 
-const Filter = ({
+export const Filter = ({
   price: activePrice,
   category: activeCategory,
   size: activeSize,
@@ -67,7 +66,7 @@ const Filter = ({
         <h5 className="title">Filter by Price</h5>
         <div className="price-slider ">
           <Range
-            max={150}
+            max={200}
             allowCross={false}
             trackStyle={[{ backgroundColor: "#f57e60" }]}
             handleStyle={[
@@ -87,20 +86,22 @@ const Filter = ({
         </span>
       </div>
 
-      <div className="filter-section sizes">
-        <h5 className="title">Filter by size</h5>
-        <ul>
-          {sizes.map((size, i) => (
-            <li
-              className={`${activeSize == size.name ? "size-active" : ""}`}
-              key={i}
-              onClick={() => updateSizeFilter(size.name)}
-            >
-              {size.label}
-            </li>
-          ))}
-        </ul>
-      </div>
+      {activeCategory !== "accesories" ? (
+        <div className="filter-section sizes">
+          <h5 className="title">Filter by size</h5>
+          <ul>
+            {sizes.map((size, i) => (
+              <li
+                className={`${activeSize == size.name ? "size-active" : ""}`}
+                key={i}
+                onClick={() => updateSizeFilter(size.name)}
+              >
+                {size.label}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
 
       <style jsx>{`
         .filter {
@@ -181,5 +182,3 @@ const Filter = ({
     </div>
   );
 };
-
-export default Filter;

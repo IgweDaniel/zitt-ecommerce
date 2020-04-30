@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
-import { products } from "../fakedata";
+
 import { useUpdateEffect } from "../hooks";
 
-const QuickProduct = ({ id: product }) => {
+export const QuickProduct = ({ id: product }) => {
   // const product = products.find((prod) => prod.id == id);
 
   const qpref = useRef(null);
@@ -34,6 +34,16 @@ const QuickProduct = ({ id: product }) => {
               eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
               enim ad minim veniam, quis nostrud exercitation ullamco laboris
             </div>
+            {product.sizes.includes("none") ? null : (
+              <div className="available-sizes">
+                <h6>AVAILABLE SIZES</h6>
+                <ul>
+                  {product.sizes.map((size, i) => (
+                    <li key={i}>{size}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
           <button>add to cart</button>
@@ -45,7 +55,27 @@ const QuickProduct = ({ id: product }) => {
             width: 100% !important;
             transition: all 0.5s ease-in-out;
           }
-
+          .available-sizes {
+            margin: 20px 0;
+          }
+          .available-sizes ul {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            flex-basis: 50px;
+          }
+          .available-sizes li {
+            margin: 10px 5px 0 0;
+            border: 0.5px solid #888;
+            font-family: "Catamaran";
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-variant: small-caps;
+          }
           .quick-products.open .content {
             display: block !important;
           }
@@ -125,5 +155,3 @@ const QuickProduct = ({ id: product }) => {
     </>
   ) : null;
 };
-
-export default QuickProduct;

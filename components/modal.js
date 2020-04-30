@@ -1,7 +1,12 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import { useUpdateEffect } from "../hooks";
 
-const Modal = ({ children, closeModal, open = false, position = "left" }) => {
+export const Modal = ({
+  children,
+  closeModal,
+  open = false,
+  position = "left",
+}) => {
   const modalRef = useRef(null);
   useUpdateEffect(() => {
     if (open) {
@@ -55,7 +60,7 @@ const Modal = ({ children, closeModal, open = false, position = "left" }) => {
           content: "";
           height: 100%;
           width: 100%;
-          background-color: #fff;
+          background-color: #000;
           z-index: 0;
           transition: opacity 0.3s ease-in-out;
         }
@@ -116,5 +121,3 @@ const Modal = ({ children, closeModal, open = false, position = "left" }) => {
     </>
   );
 };
-
-export default Modal;

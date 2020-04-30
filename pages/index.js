@@ -1,6 +1,4 @@
-import Layout from "../components/layout.js";
-
-import { useViewport } from "../hooks/";
+import { Layout } from "../components/layout.js";
 import { categories } from "../fakedata.js";
 import Link from "next/link";
 
