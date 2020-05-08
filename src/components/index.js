@@ -6,6 +6,6 @@ export { NavBar } from "./navBar";
 export { ProductItem } from "./productItem";
 export { QuickCart } from "./quickCart";
 export { Spinner } from "./spinner";
-export { QuickProduct } from "./quickProduct";
+export { ProductView } from "./productView";
 export { Input } from "./input";
 export { MutedInfo } from "./mutedInfo";

@@ -22,6 +22,7 @@ export const ProductItem = ({ viewProduct, product }) => {
 
     globalDispatch({ type: "CARTMAPUPDATE", payload: data.cartMap });
   };
+
   const displayRef = useRef(null);
   const actionRef = useRef(null);
   function handleHover() {
@@ -51,7 +52,26 @@ export const ProductItem = ({ viewProduct, product }) => {
           <span className="price">{product.price}$</span>
         </div>
         <div className="action no-mobile" ref={actionRef}>
-          <div className="icon" onClick={() => viewProduct(product)}>
+          <div
+            className="icon"
+            onClick={(e) => {
+              const img = displayRef.current.querySelector("img").currentSrc;
+              const {
+                top,
+                left,
+                height,
+                width,
+              } = displayRef.current.getBoundingClientRect();
+              displayRef.current.style.opacity = "0";
+              viewProduct({
+                coords: { x: left, y: top, height, width },
+                url: img,
+                inview: true,
+                product,
+                el: displayRef.current,
+              });
+            }}
+          >
             <ViewIcon size={15} />
           </div>
 

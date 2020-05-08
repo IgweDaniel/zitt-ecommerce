@@ -22,6 +22,7 @@ import { ShopBannerIcon } from "../../components/svgIcons.js";
 import { useUpdateEffect, useOnScreen } from "../../hooks/index.js";
 import Context from "../../store/context";
 import Axios from "axios";
+import { ProductView } from "../../components/productView";
 
 const DEFAULT_PRICE = [9, 180];
 const DEFAULT_CATEGORY = "all";
@@ -67,9 +68,22 @@ const Shop = ({ router, availableCategories, errorCode }) => {
     updatePrice = (price) => setFilterPrice(price),
     updateSize = (size) => setFilterSize(size);
 
-  const [productId, setProductID] = useState(null);
-  const viewProduct = (id) => setProductID(id),
-    closeProduct = () => setProductID(null);
+  const [productEl, setProductEl] = useState({
+    coords: { x: 0, y: 0, height: 0, width: 0 },
+    url: "",
+    inview: false,
+    product: null,
+    el: null,
+  });
+  const viewProduct = (value) => setProductEl(value),
+    closeProduct = () =>
+      setProductEl({
+        coords: { x: 0, y: 0, height: 0, width: 0 },
+        url: "",
+        inview: false,
+        product: null,
+        el: null,
+      });
 
   function handleFilterState() {
     setfilterOpen((state) => !state);
@@ -160,14 +174,7 @@ const Shop = ({ router, availableCategories, errorCode }) => {
           />
         </Modal>
 
-        <Modal
-          open={productId ? true : false}
-          position="center"
-          closeModal={closeProduct}
-        >
-          <QuickProduct id={productId} />
-        </Modal>
-
+        <ProductView productEl={productEl} reset={closeProduct} />
         <div className="banner">
           {category == DEFAULT_CATEGORY ? (
             <>

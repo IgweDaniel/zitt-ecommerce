@@ -36,7 +36,7 @@ export const QuickCart = (fetch) => {
                       {item.name}- {item.size}
                     </span>
                     <span>
-                      {item.qty} x {item.price}
+                      {item.qty} x ${item.price}
                     </span>
                   </div>
                 </div>
