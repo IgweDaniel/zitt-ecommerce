@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Head from "next/head";
 import Router from "next/router";
 
@@ -51,7 +51,7 @@ export const Layout = ({ page = "Home", ...props }) => {
         <div>{props.children}</div>
       </div>
       <Modal position="right" open={cartOpen} closeModal={handleCartState}>
-        <QuickCart />
+        <QuickCart fetch={cartOpen} />
       </Modal>
 
       <footer>

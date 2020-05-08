@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import axios from "axios";
 import { CircleIcon, CircleDotIcon } from "./svgIcons";
 import { Range } from "rc-slider";
 import Link from "next/link";

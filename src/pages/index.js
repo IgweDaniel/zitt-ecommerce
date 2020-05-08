@@ -1,6 +1,8 @@
 import { Layout } from "../components/layout.js";
-import { categories } from "../fakedata.js";
+import { categories } from "../../fakedata.js";
 import Link from "next/link";
+import Context from "../store/context.js";
+import { useContext, useEffect } from "react";
 
 const Home = () => {
   return (

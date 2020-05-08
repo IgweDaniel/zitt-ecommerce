@@ -10,11 +10,13 @@ export const Modal = ({
   const modalRef = useRef(null);
   useUpdateEffect(() => {
     if (open) {
+      document.body.style.overflow = "hidden";
       modalRef.current.classList.add("open");
       setTimeout(() => {
         modalRef.current.classList.add("animate");
       });
     } else {
+      document.body.style.overflow = "auto";
       modalRef.current.classList.remove("animate");
       setTimeout(() => {
         modalRef.current.classList.remove("open");

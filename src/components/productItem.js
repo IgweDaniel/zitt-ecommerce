@@ -1,7 +1,27 @@
-import React, { useRef, Fragment } from "react";
+import React, { useRef, Fragment, useContext } from "react";
 import { ViewIcon, AddToCart } from "./svgIcons";
-
+import Context from "../store/context";
+import axios from "axios";
 export const ProductItem = ({ viewProduct, product }) => {
+  const {
+    globalState: { cartMap },
+    globalDispatch,
+  } = useContext(Context);
+
+  const addToCart = async () => {
+    const {
+      data: { data },
+    } = await axios.post("http://localhost:4000/api/cart", {
+      name: product.name,
+      productId: product.id,
+      price: product.price,
+      qty: 1,
+      size: "X",
+      img: product.images[1].fields.file.url,
+    });
+
+    globalDispatch({ type: "CARTMAPUPDATE", payload: data.cartMap });
+  };
   const displayRef = useRef(null);
   const actionRef = useRef(null);
   function handleHover() {
@@ -34,9 +54,17 @@ export const ProductItem = ({ viewProduct, product }) => {
           <div className="icon" onClick={() => viewProduct(product)}>
             <ViewIcon size={15} />
           </div>
-          <div className="icon">
-            <AddToCart size={18} />
-          </div>
+
+          {cartMap.includes(product.id) ? (
+            <div className="icon">
+              <span>view cart</span>
+            </div>
+          ) : (
+            <div className="icon" onClick={addToCart}>
+              <AddToCart size={18} />
+            </div>
+          )}
+          {/* <AddToCart size={18} /> */}
         </div>
       </div>
 
@@ -126,11 +154,14 @@ export const ProductItem = ({ viewProduct, product }) => {
           }
           .action .icon {
             width: 20%;
-            max-width: 50px;
+            width: fit-content;
             height: 100%;
             background-color: #fff;
 
             box-shadow: 0px 9px 20px -1px rgba(0, 0, 0, 0.16);
+            padding: 0 10px;
+            font-variant: small-caps;
+            // max-width: 50px;
           }
           .action.animate {
             opacity: 1;

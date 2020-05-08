@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { withRouter } from "next/router";
 import Error from "next/error";
 import Link from "next/link";
@@ -20,6 +20,8 @@ import {
 
 import { ShopBannerIcon } from "../../components/svgIcons.js";
 import { useUpdateEffect, useOnScreen } from "../../hooks/index.js";
+import Context from "../../store/context";
+import Axios from "axios";
 
 const DEFAULT_PRICE = [9, 180];
 const DEFAULT_CATEGORY = "all";
@@ -42,6 +44,21 @@ const Shop = ({ router, availableCategories, errorCode }) => {
       size = DEFAULT_SIZE,
     },
   } = router;
+
+  const {
+    globalState: { cartMap },
+    globalDispatch,
+  } = useContext(Context);
+
+  async function fetchCart() {
+    const {
+      data: { data },
+    } = await Axios.get("http://localhost:4000/api/cart");
+    globalDispatch({ type: "CARTMAPUPDATE", payload: data.cart.map });
+  }
+  useEffect(() => {
+    fetchCart();
+  }, []);
 
   const [filterOpen, setfilterOpen] = useState(false);
 
@@ -94,6 +111,7 @@ const Shop = ({ router, availableCategories, errorCode }) => {
     });
     return entries;
   }
+
   const { pages, isReachingEnd, loadMore } = useSWRPages(
     "product/2",
     ({ offset, withSWR }) => {
@@ -307,9 +325,9 @@ export async function getServerSideProps(context) {
     errorCode = null;
 
   try {
-    category = await client.getEntries({
-      content_type: "category",
-    });
+    // category = await client.getEntries({
+    //   content_type: "category",
+    // });
   } catch (error) {
     errorCode = 500;
     console.log("error", error);
@@ -325,9 +343,27 @@ export async function getServerSideProps(context) {
       })
     : [];
   categories.push({ label: "all categories", name: "all", id: "" });
+  console.log(categories);
 
+  const dummyArray = [
+    { name: "suits", label: "suits", id: "1J54MzPaAb2HeGFMoYKM3H" },
+    { name: "jackets", label: "jackets", id: "6hvU3wDSkI7OBYhjav9bAg" },
+    { name: "trouser", label: "trouser", id: "1mpNZF0mN8kwa5awI9bl47" },
+    {
+      name: "accesories",
+      label: "accesories",
+      id: "5hVkqQli5ZLOpX2b6Amk4h",
+    },
+    { name: "hoodies", label: "hoodies", id: "6Ijuj0CSUHa0eVMFJ022tp" },
+    { name: "summer", label: "summer", id: "7hDNDzs8ucWbH7oObQ1eTN" },
+    { label: "all categories", name: "all", id: "" },
+  ];
+
+  // return {
+  //   props: { errorCode, availableCategories: categories.reverse() }, // will be passed to the page component as props
+  // };
   return {
-    props: { errorCode, availableCategories: categories.reverse() }, // will be passed to the page component as props
+    props: { errorCode, availableCategories: dummyArray.reverse() }, // will be passed to the page component as props
   };
 }
 export default withRouter(Shop);
