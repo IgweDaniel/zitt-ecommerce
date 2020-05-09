@@ -10,7 +10,7 @@ export const MutedInfo = ({ text }) => {
             text-align: center;
             width: 100%;
             height: 40px;
-            margin: 20px 0;
+            margin: 0px 0;
             font-family: "Catamaran";
             text-transform: capitalize;
             color: #888;

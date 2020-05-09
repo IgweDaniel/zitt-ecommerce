@@ -44,6 +44,11 @@ export const Layout = ({ page = "Home", ...props }) => {
         />
 
         <link rel="stylesheet" type="text/css" href="/rc-slider.css" />
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="/react-responsive-carousel.css"
+        />
       </Head>
 
       <NavBar height={NAV_HEIGHT} events={{ cart: handleCartState }} />
@@ -83,6 +88,13 @@ export const Layout = ({ page = "Home", ...props }) => {
 
         .no-mobile {
           display: none;
+        }
+
+        .stack {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
         }
 
         @media (min-width: 400px) and (max-width: 768px) {

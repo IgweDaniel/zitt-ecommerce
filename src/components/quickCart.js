@@ -1,14 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { BagIcon } from "./svgIcons";
+import { BagIcon, BinIcon } from "./svgIcons";
 import Context from "../store/context";
 import axios from "axios";
 
 export const QuickCart = (fetch) => {
-  const {
-    globalState: { cartMap },
-    globalDispatch,
-  } = useContext(Context);
+  const { globalDispatch } = useContext(Context);
   const [cart, setCart] = useState(null);
+
   async function fetchCart() {
     const {
       data: { data },
@@ -17,6 +15,19 @@ export const QuickCart = (fetch) => {
     // globalDispatch({ type: "CARTMAPUPDATE", payload: data.cart.map });
   }
 
+  async function deleteItem({ productId, size }) {
+    const {
+      data: { data },
+    } = await axios.delete("http://localhost:4000/api/cart", {
+      data: {
+        productId,
+        size,
+      },
+    });
+
+    setCart(data.cart);
+    globalDispatch({ type: "CARTMAPUPDATE", payload: data.cart.map });
+  }
   useEffect(() => {
     if (fetch) fetchCart();
   }, [fetch]);
@@ -28,8 +39,14 @@ export const QuickCart = (fetch) => {
             {cart.items.map((item) => {
               return (
                 <div className="item" key={item.productId}>
+                  <span
+                    className="icon remove-item"
+                    onClick={() => deleteItem(item)}
+                  >
+                    <BinIcon size={20} />
+                  </span>
                   <div className="item-image">
-                    <img src={item.img} alt="" />
+                    <img src={`https://${item.img}`} alt="" />
                   </div>
                   <div className="item-info">
                     <span>
@@ -73,7 +90,6 @@ export const QuickCart = (fetch) => {
         .cart.empty p {
           width: 80%;
           margin: 10px 0;
-
           font-family: "Catamaran";
         }
 
@@ -106,6 +122,7 @@ export const QuickCart = (fetch) => {
         }
 
         .item {
+          position: relative;
           height: 150px;
           margin: 10px 0;
           display: flex;
@@ -113,6 +130,17 @@ export const QuickCart = (fetch) => {
           justify-content: center;
           padding: 0 0 20px;
           border-bottom: 2px solid #eee;
+        }
+
+        .remove-item {
+          right: 0;
+          top: 50%;
+          cursor: pointer;
+          position: absolute;
+        }
+        .remove-item:hover svg {
+          fill: red !important;
+          background-color: red;
         }
         .item-info {
           width: 60%;

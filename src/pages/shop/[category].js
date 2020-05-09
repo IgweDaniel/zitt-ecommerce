@@ -11,7 +11,7 @@ import { FiFilter, FiChevronDown } from "react-icons/fi";
 import {
   Modal,
   Filter,
-  QuickProduct,
+  ProductView,
   Spinner,
   Layout,
   CatalougeItem,
@@ -19,15 +19,16 @@ import {
 } from "../../components";
 
 import { ShopBannerIcon } from "../../components/svgIcons.js";
-import { useUpdateEffect, useOnScreen } from "../../hooks/index.js";
+import { useOnScreen } from "../../hooks/index.js";
 import Context from "../../store/context";
-import Axios from "axios";
-import { ProductView } from "../../components/productView";
+import axios from "axios";
+import { useFilter } from "../../hooks/useFilter";
 
 const DEFAULT_PRICE = [9, 180];
 const DEFAULT_CATEGORY = "all";
 const DEFAULT_SIZE = "all";
 const PRODUCT_LIMIT = 8;
+
 const client = contentful.createClient({
   space: process.env.contentfulSpaceId,
   accessToken: process.env.contentfulAccessToken,
@@ -37,37 +38,24 @@ const Shop = ({ router, availableCategories, errorCode }) => {
   if (errorCode) {
     return <Error statusCode={errorCode} />;
   }
+
+  const { globalDispatch } = useContext(Context);
   const {
-    query: {
-      category = DEFAULT_CATEGORY,
-      minprice = DEFAULT_PRICE[0],
-      maxprice = DEFAULT_PRICE[1],
-      size = DEFAULT_SIZE,
-    },
-  } = router;
+    updatePrice,
+    updateSize,
+    category,
+    minprice,
+    maxprice,
+    size,
+  } = useFilter(router, {
+    DEFAULT_PRICE,
+    DEFAULT_SIZE,
+  });
 
-  const {
-    globalState: { cartMap },
-    globalDispatch,
-  } = useContext(Context);
-
-  async function fetchCart() {
-    const {
-      data: { data },
-    } = await Axios.get("http://localhost:4000/api/cart");
-    globalDispatch({ type: "CARTMAPUPDATE", payload: data.cart.map });
-  }
-  useEffect(() => {
-    fetchCart();
-  }, []);
-
+  const loader = React.useRef(null);
+  const isOnScreen = useOnScreen(loader, "40px");
   const [filterOpen, setfilterOpen] = useState(false);
-
-  const [filterprice, setFilterPrice] = useState(DEFAULT_PRICE),
-    [filtersize, setFilterSize] = useState(DEFAULT_SIZE),
-    updatePrice = (price) => setFilterPrice(price),
-    updateSize = (size) => setFilterSize(size);
-
+  const handleFilterState = () => setfilterOpen((state) => !state);
   const [productEl, setProductEl] = useState({
     coords: { x: 0, y: 0, height: 0, width: 0 },
     url: "",
@@ -75,36 +63,26 @@ const Shop = ({ router, availableCategories, errorCode }) => {
     product: null,
     el: null,
   });
-  const viewProduct = (value) => setProductEl(value),
-    closeProduct = () =>
-      setProductEl({
-        coords: { x: 0, y: 0, height: 0, width: 0 },
-        url: "",
-        inview: false,
-        product: null,
-        el: null,
-      });
 
-  function handleFilterState() {
-    setfilterOpen((state) => !state);
+  async function fetchCart() {
+    const {
+      data: { data },
+    } = await axios.get("http://localhost:4000/api/cart");
+    globalDispatch({ type: "CARTMAPUPDATE", payload: data.cart.map });
   }
+  useEffect(() => {
+    fetchCart();
+  }, []);
 
-  useUpdateEffect(() => {
-    const querystring = `?minprice=${filterprice[0]}&maxprice=${filterprice[1]}&size=${size}`;
-    router.push(`/shop/${category}${querystring}`, undefined, {
-      shallow: true,
+  const viewProduct = (state) => setProductEl(state);
+  const closeProduct = () =>
+    setProductEl({
+      coords: { x: 0, y: 0, height: 0, width: 0 },
+      url: "",
+      inview: false,
+      product: null,
+      el: null,
     });
-  }, [filterprice]);
-
-  useUpdateEffect(() => {
-    const querystring = `?minprice=${minprice}&maxprice=${maxprice}&size=${filtersize}`;
-    router.push(`/shop/${category}${querystring}`, undefined, {
-      shallow: true,
-    });
-  }, [filtersize]);
-
-  const loader = React.useRef(null);
-  const isOnScreen = useOnScreen(loader, "40px");
 
   async function fetchProducts(offset) {
     const { id } =
@@ -138,7 +116,15 @@ const Shop = ({ router, availableCategories, errorCode }) => {
           error.name == "TypeError" ? (
             <MutedInfo text="sorry! no products in this category" />
           ) : (
-            <MutedInfo text="Error loading products" />
+            <div className="stack" style={{ width: "200px", margin: "auto" }}>
+              <MutedInfo text="error loading products" />
+              <button
+                style={{ width: "100%" }}
+                onClick={() => window.location.reload()}
+              >
+                reload
+              </button>
+            </div>
           );
         return message;
       }
