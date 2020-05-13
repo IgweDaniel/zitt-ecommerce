@@ -3,22 +3,21 @@ import { BagIcon, BinIcon } from "./svgIcons";
 import Context from "../store/context";
 import axios from "axios";
 
-export const QuickCart = (fetch) => {
+export const QuickCart = ({ fetch }) => {
   const { globalDispatch } = useContext(Context);
   const [cart, setCart] = useState(null);
 
   async function fetchCart() {
     const {
       data: { data },
-    } = await axios.get("http://localhost:4000/api/cart");
+    } = await axios.get("/api/cart");
     setCart(data.cart);
-    // globalDispatch({ type: "CARTMAPUPDATE", payload: data.cart.map });
   }
 
   async function deleteItem({ productId, size }) {
     const {
       data: { data },
-    } = await axios.delete("http://localhost:4000/api/cart", {
+    } = await axios.delete("/api/cart", {
       data: {
         productId,
         size,
@@ -38,7 +37,7 @@ export const QuickCart = (fetch) => {
           <div className="cart-items">
             {cart.items.map((item) => {
               return (
-                <div className="item" key={item.productId}>
+                <div className="item" key={`${item.productId}${item.size}`}>
                   <span
                     className="icon remove-item"
                     onClick={() => deleteItem(item)}
@@ -67,7 +66,7 @@ export const QuickCart = (fetch) => {
       ) : (
         <div className="empty cart">
           <div className="icon">
-            <BagIcon size={35} />
+            <BagIcon size={20} />
           </div>
           <h5>CART IS EMPTY</h5>
 
@@ -164,6 +163,8 @@ export const QuickCart = (fetch) => {
         .item-image img {
           height: 100%;
           width: 100%;
+
+          image-rendering: crisp-edges;
           object-fit: cover;
           object-position: center;
         }

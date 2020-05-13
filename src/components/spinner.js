@@ -11,7 +11,7 @@ export const Spinner = () => {
       <style jsx>
         {`
           .spinner {
-            margin: 100px auto 0;
+            margin: 100px auto;
             width: 70px;
             text-align: center;
           }

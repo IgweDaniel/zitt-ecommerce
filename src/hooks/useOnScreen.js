@@ -6,7 +6,7 @@ export function useOnScreen(ref, rootMargin = "0px") {
   React.useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => setIntersecting(entry.isIntersecting),
-      { rootMargin }
+      { rootMargin, threshold: 0.5 }
     );
 
     if (ref.current) {

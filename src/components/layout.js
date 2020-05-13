@@ -12,6 +12,8 @@ import { AiFillInstagram } from "react-icons/ai";
 import { NavBar } from "./navBar";
 import { Modal } from "./modal";
 import { QuickCart } from "./quickCart";
+import Context from "../store/context";
+import { ProductView } from "../components";
 
 Router.onRouteChangeStart = (url) => NProgress.start();
 Router.onRouteChangeComplete = () => NProgress.done();
@@ -20,12 +22,21 @@ Router.onRouteChangeError = () => NProgress.done();
 export const Layout = ({ page = "Home", ...props }) => {
   const { width } = useViewport();
   const [cartOpen, setCartOpen] = useState(false);
+  const {
+    globalState: { product },
+    globalDispatch,
+  } = useContext(Context);
 
   const breakpoint = 769;
 
   function handleCartState() {
     setCartOpen((state) => !state);
   }
+  const closeProduct = () =>
+    globalDispatch({
+      type: "UNSETPRODUCT",
+    });
+
   const NAV_HEIGHT = breakpoint > width ? 50 : 85;
   return (
     <>
@@ -44,11 +55,6 @@ export const Layout = ({ page = "Home", ...props }) => {
         />
 
         <link rel="stylesheet" type="text/css" href="/rc-slider.css" />
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="/react-responsive-carousel.css"
-        />
       </Head>
 
       <NavBar height={NAV_HEIGHT} events={{ cart: handleCartState }} />
@@ -58,7 +64,7 @@ export const Layout = ({ page = "Home", ...props }) => {
       <Modal position="right" open={cartOpen} closeModal={handleCartState}>
         <QuickCart fetch={cartOpen} />
       </Modal>
-
+      <ProductView productEl={product} reset={closeProduct} />
       <footer>
         <ul className="social-icons">
           <li>
@@ -78,7 +84,6 @@ export const Layout = ({ page = "Home", ...props }) => {
       </footer>
       <style jsx global>{`
         :root {
-          // --themeColor:#ef8e74;
           --themeColor: #30292f;
         }
         @font-face {
@@ -144,6 +149,15 @@ export const Layout = ({ page = "Home", ...props }) => {
           justify-content: center;
           box-shadow: -1px 3px 13px -2px rgba(0, 0, 0, 0.2);
           border-radius: 3px;
+        }
+        button:active {
+          background-color: #0c0409 !important;
+          transition: all 0.2s ease-in;
+        }
+
+        button:hover {
+          background-color: #453e44;
+          transition: all 0.2s ease-in;
         }
         .icon {
           align-items: center;

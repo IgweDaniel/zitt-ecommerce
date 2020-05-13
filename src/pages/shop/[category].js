@@ -3,15 +3,13 @@ import { withRouter } from "next/router";
 import Error from "next/error";
 import Link from "next/link";
 
-import useSWR, { useSWRPages } from "swr";
-import * as contentful from "contentful";
+import { useInfiniteQuery } from "react-query";
+import { client } from "../../contentful";
 
 import { FiFilter, FiChevronDown } from "react-icons/fi";
-
 import {
   Modal,
   Filter,
-  ProductView,
   Spinner,
   Layout,
   CatalougeItem,
@@ -19,7 +17,7 @@ import {
 } from "../../components";
 
 import { ShopBannerIcon } from "../../components/svgIcons.js";
-import { useOnScreen } from "../../hooks/index.js";
+import { useOnScreen, useUpdateEffect } from "../../hooks/index.js";
 import Context from "../../store/context";
 import axios from "axios";
 import { useFilter } from "../../hooks/useFilter";
@@ -29,17 +27,13 @@ const DEFAULT_CATEGORY = "all";
 const DEFAULT_SIZE = "all";
 const PRODUCT_LIMIT = 8;
 
-const client = contentful.createClient({
-  space: process.env.contentfulSpaceId,
-  accessToken: process.env.contentfulAccessToken,
-});
-
 const Shop = ({ router, availableCategories, errorCode }) => {
   if (errorCode) {
     return <Error statusCode={errorCode} />;
   }
 
   const { globalDispatch } = useContext(Context);
+
   const {
     updatePrice,
     updateSize,
@@ -53,38 +47,16 @@ const Shop = ({ router, availableCategories, errorCode }) => {
   });
 
   const loader = React.useRef(null);
-  const isOnScreen = useOnScreen(loader, "40px");
+  const isOnScreen = useOnScreen(loader, "25px");
   const [filterOpen, setfilterOpen] = useState(false);
   const handleFilterState = () => setfilterOpen((state) => !state);
-  const [productEl, setProductEl] = useState({
-    coords: { x: 0, y: 0, height: 0, width: 0 },
-    url: "",
-    inview: false,
-    product: null,
-    el: null,
-  });
-
   async function fetchCart() {
     const {
       data: { data },
-    } = await axios.get("http://localhost:4000/api/cart");
+    } = await axios.get("/api/cart");
     globalDispatch({ type: "CARTMAPUPDATE", payload: data.cart.map });
   }
-  useEffect(() => {
-    fetchCart();
-  }, []);
-
-  const viewProduct = (state) => setProductEl(state);
-  const closeProduct = () =>
-    setProductEl({
-      coords: { x: 0, y: 0, height: 0, width: 0 },
-      url: "",
-      inview: false,
-      product: null,
-      el: null,
-    });
-
-  async function fetchProducts(offset) {
+  async function fetchProducts(key, offset = 0) {
     const { id } =
       category == DEFAULT_CATEGORY
         ? ""
@@ -103,46 +75,34 @@ const Shop = ({ router, availableCategories, errorCode }) => {
     });
     return entries;
   }
-
-  const { pages, isReachingEnd, loadMore } = useSWRPages(
-    "product/2",
-    ({ offset, withSWR }) => {
-      const { data, error } = withSWR(
-        useSWR("products" + offset, async () => fetchProducts(offset || 0))
-      );
-
-      if (error) {
-        const message =
-          error.name == "TypeError" ? (
-            <MutedInfo text="sorry! no products in this category" />
-          ) : (
-            <div className="stack" style={{ width: "200px", margin: "auto" }}>
-              <MutedInfo text="error loading products" />
-              <button
-                style={{ width: "100%" }}
-                onClick={() => window.location.reload()}
-              >
-                reload
-              </button>
-            </div>
-          );
-        return message;
-      }
-      if (!data) return <Spinner />;
-      if (data.items.length == 0) return null;
-
-      return <CatalougeItem products={data} viewProduct={viewProduct} />;
-    },
-    (SWR, index) => {
-      if (index * PRODUCT_LIMIT >= SWR.data.total) return null;
-      return (index + 1) * PRODUCT_LIMIT;
-    },
-    []
+  const {
+    status,
+    data,
+    isFetching,
+    isFetchingMore,
+    fetchMore,
+    canFetchMore = false,
+    error,
+    refetch,
+  } = useInfiniteQuery(
+    `${category}${maxprice}${minprice}${size}`,
+    fetchProducts,
+    {
+      getFetchMore: (lastGroup, allGroups) => {
+        if (lastGroup.skip + lastGroup.limit < lastGroup.total)
+          return lastGroup.skip + lastGroup.limit;
+        else return false;
+      },
+    }
   );
 
   useEffect(() => {
-    if (isOnScreen) {
-      loadMore();
+    fetchCart();
+  }, []);
+
+  useUpdateEffect(() => {
+    if (isOnScreen && canFetchMore) {
+      fetchMore();
     }
   }, [isOnScreen]);
 
@@ -160,7 +120,6 @@ const Shop = ({ router, availableCategories, errorCode }) => {
           />
         </Modal>
 
-        <ProductView productEl={productEl} reset={closeProduct} />
         <div className="banner">
           {category == DEFAULT_CATEGORY ? (
             <>
@@ -202,13 +161,33 @@ const Shop = ({ router, availableCategories, errorCode }) => {
               </span>
             </div>
           </div>
-          <div className="catalouge">{pages}</div>
-          <div className="footer">
-            {isReachingEnd ? (
-              <h4 className="content">NO MORE ITEMS AVAILABLE.</h4>
+          <div className="catalouge">
+            {status === "loading" ? (
+              <Spinner />
+            ) : status == "error" ? (
+              error.name == "TypeError" ? (
+                <MutedInfo text="sorry! no products in this category" />
+              ) : (
+                <>
+                  <MutedInfo text="error loading products" />
+                  <button style={{ width: "100%" }} onClick={() => refetch()}>
+                    reload
+                  </button>
+                </>
+              )
             ) : (
-              <div className="loader" ref={loader}></div>
+              data.map((group, i) => {
+                return <CatalougeItem key={i} products={group} />;
+              })
             )}
+
+            <div>{isFetchingMore ? <Spinner /> : null}</div>
+            <div className="loader" ref={loader}></div>
+          </div>
+          <div className="footer">
+            {!canFetchMore && data.length > 0 ? (
+              <h4 className="content">NO MORE ITEMS AVAILABLE.</h4>
+            ) : null}
           </div>
         </section>
       </main>

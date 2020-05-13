@@ -100,17 +100,6 @@ export const Modal = ({
           transform: translateX(100%);
         }
 
-        .content.center {
-          width: 70%;
-
-          left: 50%;
-          background: transparent;
-          transform: translate(-50%, 100%);
-        }
-        .modal.animate .content.center {
-          transform: translate(-50%, 0);
-        }
-
         .modal.animate .content {
           transition: all 0.3s ease-in-out 0.2s;
         }

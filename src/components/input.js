@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { CheckMarkIcon } from "./svgIcons";
+import { FiPlus, FiMinus } from "react-icons/fi";
 
 export const Input = ({ type, placeholder, name, onChange }) => {
   function handleFocus(e) {
@@ -103,7 +104,6 @@ export const CheckBox = ({ label, onChange }) => (
       }
 
       .checkbox input:checked ~ label .icon {
-        //background: black;
         opacity: 1;
       }
       .checkbox .text {
@@ -117,3 +117,75 @@ export const CheckBox = ({ label, onChange }) => (
     `}</style>
   </>
 );
+
+export const NumberInput = ({
+  min = 0,
+  max,
+  value,
+  onChange,
+  afterChange = () => {},
+}) => {
+  const [startClick, setstartClick] = useState(false);
+
+  return (
+    <>
+      <div className="number-input">
+        <div
+          className="control minus"
+          onMouseOut={() => {
+            if (startClick) {
+              afterChange(value);
+              setstartClick(false);
+            }
+          }}
+          onClick={() => {
+            if (value != min) {
+              setstartClick(true);
+              onChange(value - 1);
+            }
+          }}
+        >
+          <FiMinus size={20} />
+        </div>
+        <div className="value">{value}</div>
+        <div
+          className="control plus"
+          onMouseOut={() => {
+            if (startClick) {
+              afterChange(value);
+              setstartClick(false);
+            }
+          }}
+          onClick={() => {
+            setstartClick(true);
+            if (max && value >= max) return;
+            onChange(value + 1);
+          }}
+        >
+          <FiPlus size={20} />
+        </div>
+      </div>
+      <style jsx>{`
+        .number-input {
+          height: 40px;
+          width: 100px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+        }
+        .number-input div {
+          user-select: none;
+          display: flex;
+          flex: 1;
+          color: #888;
+          align-items: center;
+          justify-content: center;
+        }
+        .control {
+          cursor: pointer;
+        }
+      `}</style>
+    </>
+  );
+};

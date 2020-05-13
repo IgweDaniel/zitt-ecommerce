@@ -55,7 +55,7 @@ export const Filter = ({
                   <CircleIcon size={13} />
                 )}
               </span>
-              <Link href={`/shop/${category.name}`}>
+              <Link href={`/shop/[category]`} as={`/shop/${category.name}`}>
                 <span className="category-name">{category.label}</span>
               </Link>
             </li>

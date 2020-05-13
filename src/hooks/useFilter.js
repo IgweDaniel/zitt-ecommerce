@@ -17,17 +17,29 @@ export const useFilter = (router, { DEFAULT_SIZE, DEFAULT_PRICE }) => {
     updateSize = (size) => setFilterSize(size);
 
   useUpdateEffect(() => {
+    // const querystring = `?minprice=${filterprice[0]}&maxprice=${filterprice[1]}&size=${size}`;
+    // router.push(`/shop/${category}${querystring}`, undefined, {
+    //   shallow: true,
+    // });
     const querystring = `?minprice=${filterprice[0]}&maxprice=${filterprice[1]}&size=${size}`;
-    router.push(`/shop/${category}${querystring}`, undefined, {
-      shallow: true,
-    });
+    router.push(
+      `/shop/[category]${querystring}`,
+      `/shop/${category}${querystring}`,
+      {
+        shallow: true,
+      }
+    );
   }, [filterprice]);
 
   useUpdateEffect(() => {
     const querystring = `?minprice=${minprice}&maxprice=${maxprice}&size=${filtersize}`;
-    router.push(`/shop/${category}${querystring}`, undefined, {
-      shallow: true,
-    });
+    router.push(
+      `/shop/[category]${querystring}`,
+      `/shop/${category}${querystring}`,
+      {
+        shallow: true,
+      }
+    );
   }, [filtersize]);
 
   return {

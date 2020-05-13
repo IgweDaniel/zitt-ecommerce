@@ -2,6 +2,8 @@ import React, { useRef, Fragment, useContext } from "react";
 import { ViewIcon, AddToCart } from "./svgIcons";
 import Context from "../store/context";
 import axios from "axios";
+
+import Link from "next/link";
 export const ProductItem = ({ viewProduct, product }) => {
   const {
     globalState: { cartMap },
@@ -40,16 +42,32 @@ export const ProductItem = ({ viewProduct, product }) => {
         onMouseEnter={handleHover}
         onMouseLeave={handleLeave}
       >
-        <div className="image-container" ref={displayRef}>
-          {product.images.slice(0, 2).map((image, i) => (
-            <Fragment key={i}>
-              <img src={`https://${image.fields.file.url}`} />
-            </Fragment>
-          ))}
-        </div>
+        <Link href="/product/[id]" as={`/product/${product.id}`}>
+          <div className="image-container" ref={displayRef}>
+            {product.images.slice(0, 2).map((image, i) => (
+              <Fragment key={i}>
+                <img src={`https://${image.fields.file.url}`} />
+              </Fragment>
+            ))}
+          </div>
+        </Link>
         <div className="info">
           <span className="name">{product.name}</span>
           <span className="price">{product.price}$</span>
+          <div className="available-sizes">
+            {product.sizes.includes("none") ? null : (
+              <ul>
+                {product.sizes.map((size, i) => (
+                  <li
+                    key={i}
+                    // className={`${currsize.value == size ? "active" : ""}`}
+                  >
+                    {size}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
         <div className="action no-mobile" ref={actionRef}>
           <div
@@ -63,12 +81,16 @@ export const ProductItem = ({ viewProduct, product }) => {
                 width,
               } = displayRef.current.getBoundingClientRect();
               displayRef.current.style.opacity = "0";
-              viewProduct({
-                coords: { x: left, y: top, height, width },
-                url: img,
-                inview: true,
-                product,
-                el: displayRef.current,
+
+              globalDispatch({
+                type: "SETPRODUCT",
+                payload: {
+                  coords: { x: left, y: top, height, width },
+                  url: img,
+                  inview: true,
+                  product,
+                  el: displayRef.current,
+                },
               });
             }}
           >
@@ -84,7 +106,6 @@ export const ProductItem = ({ viewProduct, product }) => {
               <AddToCart size={18} />
             </div>
           )}
-          {/* <AddToCart size={18} /> */}
         </div>
       </div>
 
@@ -106,8 +127,9 @@ export const ProductItem = ({ viewProduct, product }) => {
 
         .image-container {
           position: relative;
-          height: 70%;
           width: 100%;
+
+          height: 60%;
         }
 
         .image-container img {
@@ -128,25 +150,52 @@ export const ProductItem = ({ viewProduct, product }) => {
         }
 
         .info {
-          height: 30%;
           font-weight: 100;
           width: 100%;
           display: flex;
           justify-content: center;
           flex-direction: column;
+
+          height: 40%;
         }
         .info span {
           display: block;
           margin: 5px 0;
         }
         .info span.name {
+          margin: 10px 0 0;
           font-weight: 600;
           font-size: 13px;
           font-style: normal;
           font-family: "Catamaran";
         }
         .info span.price {
+          height: 40px;
           color: #888;
+        }
+
+        .available-sizes {
+          height: 30px;
+          margin: 0px 0;
+        }
+        .available-sizes ul {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          flex-basis: 50px;
+        }
+        .available-sizes li {
+          margin: 5px 3px 0 0;
+          border: 0.5px solid #888;
+          font-family: "Catamaran";
+          width: 28px;
+          font-family: 15px;
+          height: 28px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: bold;
+          font-variant: small-caps;
         }
 
         @media (min-width: 769px) {
@@ -181,7 +230,6 @@ export const ProductItem = ({ viewProduct, product }) => {
             box-shadow: 0px 9px 20px -1px rgba(0, 0, 0, 0.16);
             padding: 0 10px;
             font-variant: small-caps;
-            // max-width: 50px;
           }
           .action.animate {
             opacity: 1;

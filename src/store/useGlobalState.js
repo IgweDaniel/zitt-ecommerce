@@ -1,4 +1,13 @@
 import React from "react";
+
+const initialProduct = {
+  coords: { x: 0, y: 0, height: 0, width: 0 },
+  url: "",
+  inview: false,
+  product: null,
+  el: null,
+};
+
 const reducer = (state, action) => {
   switch (action.type) {
     case "LOGIN":
@@ -19,6 +28,15 @@ const reducer = (state, action) => {
       return newState;
     case "CARTMAPUPDATE":
       return { ...state, cartMap: action.payload };
+    case "SETPRODUCT":
+      return { ...state, product: action.payload };
+    case "UNSETPRODUCT":
+      return {
+        ...state,
+        product: {
+          ...initialProduct,
+        },
+      };
     default:
       return state;
   }
@@ -28,6 +46,9 @@ const initialState = {
   customer: null,
   cart: [],
   cartMap: [],
+  product: {
+    ...initialProduct,
+  },
 };
 
 const useGlobalState = () => {

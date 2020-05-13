@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TimelineLite, Power2 } from "gsap";
 
-import { Carousel } from "react-responsive-carousel";
-
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import Rcarousel from "./Rcarousel";
 
 export const ProductView = ({
   productEl: { coords, url, inview, product, el },
@@ -12,10 +10,12 @@ export const ProductView = ({
   let backdrop = null,
     container = null,
     imgSection = null,
-    contentSection = null;
-
+    contentSection = null,
+    width = null;
+  const [show, setShow] = useState(false);
   function reverse(e) {
     const tl = new TimelineLite();
+    setShow(false);
     tl.to(contentSection, { opacity: 0, duration: 0 })
       .to(backdrop, { display: "none", duration: 0 })
       .to(imgSection, { width: "100%" }, "-=0.5")
@@ -55,7 +55,8 @@ export const ProductView = ({
         .to(imgSection, { width: 400 }, "-=1.4")
         .to(container, { width: 800, duration: 0.6 })
         .to(contentSection, { display: "flex" })
-        .to(contentSection, { opacity: 1, ease: Power2.easeIn }, "-=0.6");
+        .to(contentSection, { opacity: 1, ease: Power2.easeIn }, "-=0.6")
+        .then(() => setShow(true));
     }
   }, [coords]);
 
@@ -81,43 +82,32 @@ export const ProductView = ({
         }}
       >
         <section className="img-wrapper" ref={(el) => (imgSection = el)}>
-          {product && (
-            <>
-              <Carousel
-                showThumbs={false}
-                className="product-carousel"
-                infiniteLoop={true}
-                showStatus={false}
-                showIndicators={false}
-                renderArrowNext={(clickHandler, hasNext) => (
-                  <span className="arrow next" onClick={clickHandler}>
-                    <IoIosArrowForward color="#888" size={25} />
-                  </span>
-                )}
-                showArrows={false}
-                renderArrowPrev={(clickHandler, hasPrev) => (
-                  <span className="arrow prev" onClick={clickHandler}>
-                    <IoIosArrowBack size={25} color="#888" />
-                  </span>
-                )}
-              >
-                {product.images.map((img, index) => {
-                  return (
-                    <div index={index} key={index} style={{ height: "100%" }}>
-                      <img
-                        src={`https://${img.fields.file.url}`}
-                        style={{
-                          objectFit: "cover",
-                          objectPosition: "center",
-                          height: "100%",
-                          width: "100%",
-                        }}
-                      />
-                    </div>
-                  );
-                })}
-              </Carousel>
-            </>
+          {show ? (
+            <Rcarousel inview={inview} renderThumbs={false}>
+              {product &&
+                product.images.map((img, index) => (
+                  <img
+                    style={{
+                      objectFit: "cover",
+                      objectPosition: "center",
+                      height: "100%",
+                      width: "100%",
+                    }}
+                    key={index}
+                    src={`https://${img.fields.file.url}`}
+                  />
+                ))}
+            </Rcarousel>
+          ) : (
+            <img
+              style={{
+                objectFit: "cover",
+                objectPosition: "center",
+                height: "100%",
+                width: "100%",
+              }}
+              src={`${url}`}
+            />
           )}
         </section>
 
@@ -125,7 +115,7 @@ export const ProductView = ({
           {product && (
             <div className="wrapper">
               <h2 className="name">{product.name}</h2>
-              <h3 className="price">{product.price}$</h3>
+              <h3 className="price">${product.price}</h3>
               <div className="description">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
@@ -172,8 +162,6 @@ export const ProductView = ({
           width: 100%;
           height: 100%;
           transition: all 500ms;
-
-          // transition: left 500ms, top 500ms, width 400ms, height 400ms;
         }
         .quick-products .content {
           display: none;
@@ -244,23 +232,6 @@ export const ProductView = ({
           height: 100%;
         }
 
-        .arrow {
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          position: absolute;
-          top: 50%;
-          transform: tranlateY(-50%);
-        }
-        .arrow.prev {
-          left: 0;
-          z-index: 1;
-        }
-        .arrow.next {
-          right: 0;
-        }
         .item-add {
           background-color: #43aa8b;
         }

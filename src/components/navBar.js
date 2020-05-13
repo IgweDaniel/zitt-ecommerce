@@ -37,7 +37,7 @@ export const NavBar = ({ color = "#fff", height, events, ...props }) => {
             </Link>
           </li>
           <li>
-            <Link href="/shop/all">
+            <Link as="/shop/all" href="/shop/[category]">
               <a>SHOP</a>
             </Link>
           </li>
