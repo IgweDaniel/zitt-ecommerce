@@ -9,3 +9,4 @@ export { Spinner } from "./spinner";
 export { ProductView } from "./productView";
 export { Input } from "./input";
 export { MutedInfo } from "./mutedInfo";
+export { CartItem } from "./cartItem";

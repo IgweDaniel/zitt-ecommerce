@@ -54,7 +54,7 @@ const Shop = ({ router, availableCategories, errorCode }) => {
     const {
       data: { data },
     } = await axios.get("/api/cart");
-    globalDispatch({ type: "CARTMAPUPDATE", payload: data.cart.map });
+    globalDispatch({ type: "SETCART", payload: data.cart });
   }
   async function fetchProducts(key, offset = 0) {
     const { id } =

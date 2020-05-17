@@ -2,16 +2,21 @@ import React, { useContext, useEffect, useState } from "react";
 import { BagIcon, BinIcon } from "./svgIcons";
 import Context from "../store/context";
 import axios from "axios";
+import Link from "next/link";
 
 export const QuickCart = ({ fetch }) => {
-  const { globalDispatch } = useContext(Context);
-  const [cart, setCart] = useState(null);
+  const {
+    globalDispatch,
+    globalState: { cart },
+  } = useContext(Context);
+  // const [cart, setCart] = useState(null);
 
   async function fetchCart() {
     const {
       data: { data },
     } = await axios.get("/api/cart");
-    setCart(data.cart);
+    // setCart(data.cart);
+    globalDispatch({ type: "SETCART", payload: data.cart });
   }
 
   async function deleteItem({ productId, size }) {
@@ -24,12 +29,12 @@ export const QuickCart = ({ fetch }) => {
       },
     });
 
-    setCart(data.cart);
-    globalDispatch({ type: "CARTMAPUPDATE", payload: data.cart.map });
+    globalDispatch({ type: "SETCART", payload: data.cart });
   }
   useEffect(() => {
     if (fetch) fetchCart();
   }, [fetch]);
+
   return (
     <>
       {cart && cart.items.length > 0 ? (
@@ -60,7 +65,9 @@ export const QuickCart = ({ fetch }) => {
             })}
           </div>
           <div className="total">Total: ${cart.subTotal}</div>
-          <button>view cart</button>
+          <Link href="/cart">
+            <button>view cart</button>
+          </Link>
           <button className="checkout">checkout</button>
         </div>
       ) : (
@@ -71,7 +78,9 @@ export const QuickCart = ({ fetch }) => {
           <h5>CART IS EMPTY</h5>
 
           <p>Check out all the available products and buy some in the shop</p>
-          <button className="close-cart">go shopping</button>
+          <Link href="/shop/[category]" as={`/shop/all`}>
+            <button className="close-cart">go shopping</button>
+          </Link>
         </div>
       )}
 

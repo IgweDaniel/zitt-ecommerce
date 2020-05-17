@@ -134,7 +134,7 @@ export const NumberInput = ({
           className="control minus"
           onMouseOut={() => {
             if (startClick) {
-              afterChange(value);
+              afterChange({ type: "decrement" }, value);
               setstartClick(false);
             }
           }}
@@ -152,7 +152,7 @@ export const NumberInput = ({
           className="control plus"
           onMouseOut={() => {
             if (startClick) {
-              afterChange(value);
+              afterChange({ type: "increment" }, value);
               setstartClick(false);
             }
           }}

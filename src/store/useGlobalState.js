@@ -14,18 +14,11 @@ const reducer = (state, action) => {
       return { isLoggedIn: true };
     case "LOGOUT":
       return { isLoggedIn: false };
-    case "CARTUPDATE":
-      const newState = {
+    case "SETCART":
+      return {
         ...state,
-        cart: [...state.cart, action.payload],
+        cart: action.payload,
       };
-      const cart = localStorage.getItem("cart");
-      if (cart) {
-        const data = JSON.parse(cart);
-        localStorage.setItem("cart", JSON.stringify([...newState.cart]));
-      } else localStorage.setItem("cart", JSON.stringify(newState.cart));
-
-      return newState;
     case "CARTMAPUPDATE":
       return { ...state, cartMap: action.payload };
     case "SETPRODUCT":
@@ -44,7 +37,7 @@ const reducer = (state, action) => {
 
 const initialState = {
   customer: null,
-  cart: [],
+  cart: null,
   cartMap: [],
   product: {
     ...initialProduct,

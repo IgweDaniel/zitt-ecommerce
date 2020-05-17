@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useUpdateEffect } from "./useUpdateEffect";
+import { Router } from "next/router";
 
 export const useFilter = (router, { DEFAULT_SIZE, DEFAULT_PRICE }) => {
   const {
@@ -17,10 +18,6 @@ export const useFilter = (router, { DEFAULT_SIZE, DEFAULT_PRICE }) => {
     updateSize = (size) => setFilterSize(size);
 
   useUpdateEffect(() => {
-    // const querystring = `?minprice=${filterprice[0]}&maxprice=${filterprice[1]}&size=${size}`;
-    // router.push(`/shop/${category}${querystring}`, undefined, {
-    //   shallow: true,
-    // });
     const querystring = `?minprice=${filterprice[0]}&maxprice=${filterprice[1]}&size=${size}`;
     router.push(
       `/shop/[category]${querystring}`,
@@ -30,6 +27,10 @@ export const useFilter = (router, { DEFAULT_SIZE, DEFAULT_PRICE }) => {
       }
     );
   }, [filterprice]);
+
+  useEffect(() => {
+    updateSize(DEFAULT_SIZE);
+  }, [category]);
 
   useUpdateEffect(() => {
     const querystring = `?minprice=${minprice}&maxprice=${maxprice}&size=${filtersize}`;

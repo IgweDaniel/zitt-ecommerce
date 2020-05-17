@@ -1,4 +1,4 @@
-import React, { useRef, Fragment, useContext } from "react";
+import React, { useRef, Fragment, useContext, useEffect } from "react";
 import { ViewIcon, AddToCart } from "./svgIcons";
 import Context from "../store/context";
 import axios from "axios";
@@ -6,7 +6,7 @@ import axios from "axios";
 import Link from "next/link";
 export const ProductItem = ({ viewProduct, product }) => {
   const {
-    globalState: { cartMap },
+    globalState: { cart },
     globalDispatch,
   } = useContext(Context);
 
@@ -21,8 +21,7 @@ export const ProductItem = ({ viewProduct, product }) => {
       size: "X",
       img: product.images[1].fields.file.url,
     });
-
-    globalDispatch({ type: "CARTMAPUPDATE", payload: data.cartMap });
+    globalDispatch({ type: "SETCART", payload: data.cart });
   };
 
   const displayRef = useRef(null);
@@ -97,7 +96,7 @@ export const ProductItem = ({ viewProduct, product }) => {
             <ViewIcon size={15} />
           </div>
 
-          {cartMap.includes(product.id) ? (
+          {cart && cart.map.includes(product.id) ? (
             <div className="icon">
               <span>view cart</span>
             </div>

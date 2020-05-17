@@ -188,6 +188,10 @@ const Rcarousel = ({ children, renderThumbs }) => {
           margin: 0 0 5px;
           cursor: pointer;
         }
+        .thumbs .thumbnail:hover {
+          opacity: 0.4;
+          transition: all 0.2s ease-in-out;
+        }
         .thumbs .thumbnail img {
           width: 100px !important;
           height: 100px !important;
@@ -196,7 +200,6 @@ const Rcarousel = ({ children, renderThumbs }) => {
         }
         .current {
           opacity: 0.4;
-
           transition: all 0.2s ease-in-out;
         }
         .arrow {
