@@ -2,7 +2,7 @@ import GlobalStateProvider from "../store/globalStateProvider";
 
 import axios from "axios";
 
-// axios.defaults.baseURL = "http://localhost:4000";
+axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.baseURL = `http://${process.env.address}:4000`;
 console.log(process.env.address);
 

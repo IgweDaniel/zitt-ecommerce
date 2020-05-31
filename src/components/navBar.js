@@ -1,12 +1,16 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useContext } from "react";
 import Link from "next/link";
 
 import { AiOutlineMenu } from "react-icons/ai";
 import { CartIcon, UserIcon, SearchIcon } from "./svgIcons";
+import Context from "../store/context";
 
 const ICON_SIZE = 20;
 
 export const NavBar = ({ color = "#fff", height, events, ...props }) => {
+  const {
+    globalState: { cart },
+  } = useContext(Context);
   const navBarRef = useRef(null);
   useEffect(() => {
     window.addEventListener("scroll", updateNavBar);
@@ -56,6 +60,7 @@ export const NavBar = ({ color = "#fff", height, events, ...props }) => {
         <ul className="actions">
           <li onClick={events.cart}>
             <CartIcon size={ICON_SIZE} />
+            {cart && <span className="cart-size">{cart.size}</span>}
           </li>
 
           <li>
@@ -109,6 +114,10 @@ export const NavBar = ({ color = "#fff", height, events, ...props }) => {
           list-style: none;
           margin: 0 5px;
           cursor: pointer;
+        }
+        .cart-size {
+          font-family: "Catamaran";
+          font-variant: small-caps;
         }
 
         @media (min-width: 769px) {

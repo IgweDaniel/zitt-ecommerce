@@ -4,6 +4,7 @@ import Context from "../store/context";
 import axios from "axios";
 
 import Link from "next/link";
+import { addCartItem } from "../utils/api";
 export const ProductItem = ({ viewProduct, product }) => {
   const {
     globalState: { cart },
@@ -11,17 +12,9 @@ export const ProductItem = ({ viewProduct, product }) => {
   } = useContext(Context);
 
   const addToCart = async () => {
-    const {
-      data: { data },
-    } = await axios.post("http://localhost:4000/api/cart", {
-      name: product.name,
-      productId: product.id,
-      price: product.price,
-      qty: 1,
-      size: "X",
-      img: product.images[1].fields.file.url,
-    });
-    globalDispatch({ type: "SETCART", payload: data.cart });
+    addCartItem(product).then((cart) =>
+      globalDispatch({ type: "SETCART", payload: cart })
+    );
   };
 
   const displayRef = useRef(null);
@@ -97,9 +90,11 @@ export const ProductItem = ({ viewProduct, product }) => {
           </div>
 
           {cart && cart.map.includes(product.id) ? (
-            <div className="icon">
-              <span>view cart</span>
-            </div>
+            <Link href="/cart">
+              <div className="icon">
+                <span>view cart</span>
+              </div>
+            </Link>
           ) : (
             <div className="icon" onClick={addToCart}>
               <AddToCart size={18} />

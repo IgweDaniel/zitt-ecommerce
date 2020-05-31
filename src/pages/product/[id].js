@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Layout, Spinner, ProductItem } from "../../components";
 import Error from "next/error";
 import Select from "react-select";
-import { client } from "../../contentful";
+import { client } from "../../utils/contentful";
 import Rcarousel from "../../components/Rcarousel";
 import { NumberInput } from "../../components/input";
 import axios from "axios";

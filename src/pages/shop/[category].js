@@ -4,7 +4,7 @@ import Error from "next/error";
 import Link from "next/link";
 
 import { useInfiniteQuery } from "react-query";
-import { client } from "../../contentful";
+import { client } from "../../utils/contentful";
 
 import { FiFilter, FiChevronDown } from "react-icons/fi";
 import {
@@ -21,6 +21,7 @@ import { useOnScreen, useUpdateEffect } from "../../hooks/index.js";
 import Context from "../../store/context";
 import axios from "axios";
 import { useFilter } from "../../hooks/useFilter";
+import { getCart } from "../../utils/api";
 
 const DEFAULT_PRICE = [9, 180];
 const DEFAULT_CATEGORY = "all";
@@ -50,12 +51,7 @@ const Shop = ({ router, availableCategories, errorCode }) => {
   const isOnScreen = useOnScreen(loader, "25px");
   const [filterOpen, setfilterOpen] = useState(false);
   const handleFilterState = () => setfilterOpen((state) => !state);
-  async function fetchCart() {
-    const {
-      data: { data },
-    } = await axios.get("/api/cart");
-    globalDispatch({ type: "SETCART", payload: data.cart });
-  }
+
   async function fetchProducts(key, offset = 0) {
     const { id } =
       category == DEFAULT_CATEGORY
@@ -97,7 +93,9 @@ const Shop = ({ router, availableCategories, errorCode }) => {
   );
 
   useEffect(() => {
-    fetchCart();
+    getCart().then((cart) =>
+      globalDispatch({ type: "SETCART", payload: cart })
+    );
   }, []);
 
   useUpdateEffect(() => {
@@ -130,7 +128,10 @@ const Shop = ({ router, availableCategories, errorCode }) => {
                 {availableCategories.map((category) =>
                   category.name !== DEFAULT_CATEGORY ? (
                     <li key={category.id}>
-                      <Link href={`/shop/${category.name}`}>
+                      <Link
+                        href={`/shop/[category]`}
+                        as={`/shop/${category.name}`}
+                      >
                         <a>{category.label.toUpperCase()}</a>
                       </Link>
                     </li>
@@ -315,7 +316,7 @@ export async function getServerSideProps(context) {
       })
     : [];
   categories.push({ label: "all categories", name: "all", id: "" });
-  console.log(categories);
+  // console.log(categories);
 
   const dummyArray = [
     { name: "suits", label: "suits", id: "1J54MzPaAb2HeGFMoYKM3H" },

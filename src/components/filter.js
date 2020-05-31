@@ -157,8 +157,9 @@ export const Filter = ({
           margin: 10px 5px 0 0;
           border: 0.5px solid #888;
           font-family: "Catamaran";
-          width: 40px;
-          height: 40px;
+          font-size: 14px;
+          width: 35px;
+          height: 35px;
           display: flex;
           align-items: center;
           justify-content: center;

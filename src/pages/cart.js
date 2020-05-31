@@ -2,62 +2,86 @@ import { Layout } from "../components/layout.js";
 import Link from "next/link";
 import { useState, useContext, useEffect } from "react";
 import Context from "../store/context.js";
-import axios from "axios";
-import { CartBannerIcon } from "../components/svgIcons.js";
 import { CartItem } from "../components";
+import { getCart, emptyCart } from "../utils/api.js";
+import { BagIcon, CartBannerIcon } from "../components/svgIcons.js";
 
 export default () => {
   const {
     globalDispatch,
     globalState: { cart },
   } = useContext(Context);
-  // const [cart, setCart] = useState(null);
-
-  async function fetchCart() {
-    const {
-      data: { data },
-    } = await axios.get("/api/cart");
-    globalDispatch({ type: "SETCART", payload: data.cart });
-  }
 
   useEffect(() => {
-    document.body.style.overflowY = "scroll";
-    fetchCart();
+    getCart().then((cart) =>
+      globalDispatch({ type: "SETCART", payload: cart })
+    );
   }, []);
+
+  function clearCart() {
+    emptyCart().then((cart) =>
+      globalDispatch({ type: "SETCART", payload: cart })
+    );
+  }
+  console.log(cart);
   return (
     <Layout>
       <div className="banner">
-        <div className="icon">
-          <CartBannerIcon size={100} />
-        </div>
+        <CartBannerIcon size={40} />
         <h1>Shopping Cart</h1>
       </div>
       <main>
-        <div className="wrapper">
-          <section className="cart-items">
-            {cart &&
-              cart.items.map((item) => (
-                <CartItem key={`${item.productId}${item.size}`} item={item} />
-              ))}
-          </section>
-          {cart && (
-            <section className="cart-totals">
-              <div className="cart-totals-inner">
-                <div className="meta">
-                  <h5>CART TOTALS</h5>
+        {cart && (
+          <>
+            {cart.size != 0 ? (
+              <div className="wrapper">
+                <div className="cart-items">
+                  <table>
+                    <thead className="no-mobile">
+                      <tr>
+                        <td>Product</td>
+                        <td>Price</td>
+                        <td>Quantity</td>
+                        <td>SubTotal</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {cart.items.map((item) => (
+                        <CartItem
+                          key={`${item.productId}${item.size}`}
+                          item={item}
+                        />
+                      ))}
+                    </tbody>
+                  </table>
+                  <div className="actions">
+                    <button onClick={clearCart}>clear cart</button>
+                    <Link href="/shop/[category]" as="/shop/all">
+                      <button>back to shop</button>
+                    </Link>
+                  </div>
                 </div>
-                <div className="total">
-                  <span>SUBTOTAL</span>
-                  <span className="price">${cart.subTotal}</span>
-                </div>
-                <div className="actions">
-                  <button className="danger">clear cart</button>
-                  <button className="checkout">checkout</button>
+                <div className="cart-total">
+                  <h4 className="cart-total-header">cart totals</h4>
+                  <div className="cart-totals-inner">
+                    <div>
+                      <span>SubTotal:</span> <span>${cart.subTotal}</span>
+                    </div>
+                    <div>
+                      <span>Shipping:</span> <span>not available</span>
+                    </div>
+                    <div>
+                      <span>Total:</span> <span>${cart.subTotal}</span>
+                    </div>
+                    <button className="checkout">checkout</button>
+                  </div>
                 </div>
               </div>
-            </section>
-          )}
-        </div>
+            ) : (
+              <h1>No items in Cart</h1>
+            )}
+          </>
+        )}
       </main>
 
       <style jsx>{`
@@ -66,84 +90,123 @@ export default () => {
           align-items: center;
           justify-content: center;
           flex-direction: column;
+          margin: 80px 0;
         }
-
         .banner h1 {
-          font-size: 41px;
-          font-family: "Catamaran";
-          font-variant: small-caps;
+          font-size: 38px;
         }
         .icon {
           display: flex;
           align-items: center;
           justify-content: center;
         }
+        main h1 {
+          text-align: center;
+        }
 
         main {
           margin: 50px 0;
         }
         .wrapper {
-          margin: auto;
-          width: 80%;
-          max-width: 900px;
+          margin: 30px auto;
         }
-        .cart-totals {
-          position: relative;
-          height: 300px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
+        table {
+          width: 100%;
+          height: 100%;
+        }
+        thead tr {
+          display: grid;
+          grid-template-columns: 1fr 100px 100px 100px;
+        }
+        .cart-total-header,
+        thead tr {
+          height: 50px;
+          font-family: "Catamaran";
+          text-transform: uppercase;
+          font-variant: small-caps;
+          border-bottom: 2px solid #888;
+        }
+
+        .cart-total {
+          position: sticky;
+          top: 100px;
+        }
+        .cart-items {
+          width: 100%;
+          padding: 0 10px;
+          margin-bottom: 20px;
+        }
+        .cart-total {
+          padding: 0 10px;
+          width: 100%;
+          min-height: 300px;
         }
         .cart-totals-inner {
-          height: 100%;
           width: 100%;
         }
-
-        .cart-totals .meta {
-          display: flex;
-          align-items: center;
-
-          border-bottom: 1px solid #eee;
-          height: 40px;
-        }
-        .total {
-          padding: 20px 0;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        .total span {
-          display: block;
-          margin: 0 5px;
-        }
-        .total span.price {
-          font-size: 20px;
+        .cart-total span {
           font-family: "Catamaran";
+          text-transform: uppercase;
+          font-variant: small-caps;
         }
-        .cart-totals button {
+        .cart-total span:first-of-type {
+          font-weight: bold;
+        }
+        .cart-total button {
           width: 100%;
-        }
-        .cart-totals button.danger {
-          //background: #db3a34;
-        }
-        .cart-totals button.checkout {
-          background-color: #43aa8b;
+          box-shadow: none;
         }
         .actions {
           display: flex;
+          justify-content: center;
           align-items: center;
-          justify-content: space-between;
           flex-direction: column;
         }
+
+        .cart-total button.checkout {
+          background-color: #43aa8b;
+        }
+        .actions button {
+          margin: 3px 0;
+          width: 100%;
+        }
         @media (min-width: 769px) {
-          .cart-totals button {
-            width: 150px;
+          .banner h1 {
+            font-size: 60px;
+          }
+          thead {
+            display: block;
+          }
+          .wrapper {
+            margin: 30px auto;
+            width: 90%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+          }
+          .cart-items {
+            width: 68%;
+            border-right: 2px solid #888;
+            padding-right: 20px;
+          }
+          .cart-total {
+            padding: 0 10px;
+            width: 30%;
+            min-height: 300px;
+          }
+
+          .cart-total {
+            position: static;
+            top: 100px;
           }
           .actions {
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
             flex-direction: row;
+          }
+          .actions button {
+            width: initial;
           }
         }
       `}</style>

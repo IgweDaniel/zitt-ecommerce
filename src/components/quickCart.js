@@ -1,38 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
 import { BagIcon, BinIcon } from "./svgIcons";
 import Context from "../store/context";
-import axios from "axios";
 import Link from "next/link";
+import { getCart, updateCart } from "../utils/api";
 
 export const QuickCart = ({ fetch }) => {
   const {
     globalDispatch,
     globalState: { cart },
   } = useContext(Context);
-  // const [cart, setCart] = useState(null);
-
-  async function fetchCart() {
-    const {
-      data: { data },
-    } = await axios.get("/api/cart");
-    // setCart(data.cart);
-    globalDispatch({ type: "SETCART", payload: data.cart });
-  }
 
   async function deleteItem({ productId, size }) {
-    const {
-      data: { data },
-    } = await axios.delete("/api/cart", {
-      data: {
-        productId,
-        size,
-      },
-    });
-
-    globalDispatch({ type: "SETCART", payload: data.cart });
+    const cart = await updateCart({ productId, size }, "delete");
+    globalDispatch({ type: "SETCART", payload: cart });
   }
   useEffect(() => {
-    if (fetch) fetchCart();
+    if (fetch)
+      getCart().then((cart) =>
+        globalDispatch({ type: "SETCART", payload: cart })
+      );
   }, [fetch]);
 
   return (
@@ -105,6 +91,7 @@ export const QuickCart = ({ fetch }) => {
           display: flex;
           align-items: center;
           height: 100%;
+          width: 100%;
           flex-direction: column;
         }
 

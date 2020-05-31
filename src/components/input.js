@@ -118,6 +118,7 @@ export const CheckBox = ({ label, onChange }) => (
   </>
 );
 
+const COTROL_FILL = "#FFF";
 export const NumberInput = ({
   min = 0,
   max,
@@ -145,7 +146,7 @@ export const NumberInput = ({
             }
           }}
         >
-          <FiMinus size={20} />
+          <FiMinus color={COTROL_FILL} size={20} />
         </div>
         <div className="value">{value}</div>
         <div
@@ -162,12 +163,12 @@ export const NumberInput = ({
             onChange(value + 1);
           }}
         >
-          <FiPlus size={20} />
+          <FiPlus color={COTROL_FILL} size={20} />
         </div>
       </div>
       <style jsx>{`
         .number-input {
-          height: 40px;
+          height: 35px;
           width: 100px;
           display: flex;
           align-items: center;
@@ -178,12 +179,15 @@ export const NumberInput = ({
           user-select: none;
           display: flex;
           flex: 1;
+          height: 100%;
           color: #888;
           align-items: center;
           justify-content: center;
         }
         .control {
           cursor: pointer;
+          background-color: #30292f;
+          border: 1px solid #30292f;
         }
       `}</style>
     </>

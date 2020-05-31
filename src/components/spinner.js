@@ -11,7 +11,7 @@ export const Spinner = () => {
       <style jsx>
         {`
           .spinner {
-            margin: 100px auto;
+            margin: 50px auto;
             width: 70px;
             text-align: center;
           }
@@ -69,9 +69,9 @@ export const Spinner = () => {
 export const BounceSpinner = ({ size = 40 }) => {
   return (
     <>
-      <div class="spinner">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
+      <div className="spinner">
+        <div className="double-bounce1"></div>
+        <div className="double-bounce2"></div>
       </div>
       <style jsx>{`
         .spinner {

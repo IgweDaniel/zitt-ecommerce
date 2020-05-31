@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Head from "next/head";
 import Router from "next/router";
 
@@ -36,6 +36,9 @@ export const Layout = ({ page = "Home", ...props }) => {
     globalDispatch({
       type: "UNSETPRODUCT",
     });
+  useEffect(() => {
+    document.body.style.overflowY = "auto";
+  }, []);
 
   const NAV_HEIGHT = breakpoint > width ? 50 : 85;
   return (
@@ -141,14 +144,17 @@ export const Layout = ({ page = "Home", ...props }) => {
           padding: 0 12px;
           margin: 10px 0;
           font-size: 15px;
-          font-variant: small-caps;
           cursor: pointer;
           outline: none;
           display: flex;
           align-items: center;
           justify-content: center;
-          box-shadow: -1px 3px 13px -2px rgba(0, 0, 0, 0.2);
-          border-radius: 3px;
+          text-transform: capitalize;
+          font-family: "Catamaran";
+          font-weight: bold;
+          //box-shadow: -1px 3px 13px -2px rgba(0, 0, 0, 0.2);
+          // font-variant: small-caps;
+          //border-radius: 3px;
         }
         button:active {
           background-color: #0c0409 !important;
