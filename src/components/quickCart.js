@@ -1,18 +1,19 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { BagIcon, BinIcon } from "./svgIcons";
 import Context from "../store/context";
 import Link from "next/link";
-import { getCart, updateCart } from "../utils/api";
+import { removeCartItem } from "../utils/cartActions";
 
-export const QuickCart = ({ fetch }) => {
+export const QuickCart = () => {
   const {
     globalDispatch,
     globalState: { cart },
   } = useContext(Context);
 
-  async function deleteItem({ productId, size }) {
-    const cart = await updateCart({ productId, size }, "delete");
-    globalDispatch({ type: "SETCART", payload: cart });
+  async function deleteItem({ id }) {
+    removeCartItem(id).then((cart) =>
+      globalDispatch({ type: "SETCART", payload: cart })
+    );
   }
 
   return (
@@ -22,7 +23,7 @@ export const QuickCart = ({ fetch }) => {
           <div className="cart-items">
             {cart.items.map((item) => {
               return (
-                <div className="item" key={`${item.productId}${item.size}`}>
+                <div className="item" key={item.id}>
                   <span
                     className="icon remove-item"
                     onClick={() => deleteItem(item)}

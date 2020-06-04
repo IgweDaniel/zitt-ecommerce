@@ -4,7 +4,7 @@ import Context from "../store/context";
 import axios from "axios";
 
 import Link from "next/link";
-import { addCartItem } from "../utils/api";
+import { addCartItem } from "../utils/cartActions";
 export const ProductItem = ({ product }) => {
   const {
     globalState: { cart },

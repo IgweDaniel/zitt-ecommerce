@@ -6,7 +6,7 @@ import { client } from "../../utils/contentful";
 import Rcarousel from "../../components/Rcarousel";
 import { NumberInput } from "../../components/input";
 
-import { addCartItem } from "../../utils/api";
+import { addCartItem } from "../../utils/cartActions";
 import Context from "../../store/context";
 
 export default function ({ product, errorCode }) {

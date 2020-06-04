@@ -60,7 +60,9 @@ export const NavBar = ({ color = "#fff", height, events, ...props }) => {
         <ul className="actions">
           <li onClick={events.cart} className="cart-action">
             <CartIcon size={ICON_SIZE} />
-            {cart && <span className="cart-size">{cart.size}</span>}
+            {cart && cart.size != 0 ? (
+              <span className="cart-size">{cart.size}</span>
+            ) : null}
           </li>
 
           <li>

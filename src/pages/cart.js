@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState, useContext, useEffect } from "react";
 import Context from "../store/context.js";
 import { CartItem } from "../components";
-import { emptyCart, updateCart } from "../utils/api.js";
+import { emptyCart, updateCart } from "../utils/cartActions.js";
 import { CartBannerIcon } from "../components/svgIcons.js";
 
 import { FiRefreshCw } from "react-icons/fi";
@@ -16,12 +16,12 @@ export default () => {
 
   const [pendingCart, setPendingCart] = useState(cart);
 
-  function prepareUpdate(productId, qty) {
+  function prepareUpdate(itemId, qty) {
     let updateCart;
     if (!pendingCart) updateCart = { ...cart };
     else updateCart = { ...pendingCart };
 
-    const item = updateCart.items.find((item) => item.productId == productId);
+    const item = updateCart.items.find((item) => item.id == itemId);
     updateCart.size -= item.qty;
     updateCart.subTotal -= item.price * item.qty;
     item.qty = qty;
@@ -29,6 +29,9 @@ export default () => {
     updateCart.subTotal += item.price * qty;
     setPendingCart(updateCart);
   }
+  useEffect(() => {
+    setPendingCart(cart);
+  }, [cart]);
 
   function update() {
     updateCart(pendingCart).then((cart) =>
@@ -61,7 +64,7 @@ export default () => {
                       {cart.items.map((item) => (
                         <CartItem
                           prepareUpdate={prepareUpdate}
-                          key={`${item.productId}${item.size}`}
+                          key={item.id}
                           item={item}
                         />
                       ))}
@@ -147,10 +150,6 @@ export default () => {
           border-bottom: 2px solid #e0e0e0;
         }
 
-        .cart-total {
-          position: sticky;
-          top: 100px;
-        }
         .cart-items {
           width: 100%;
           padding: 0 10px;
@@ -242,11 +241,11 @@ export default () => {
             width: 30%;
             min-height: 300px;
           }
-
           .cart-total {
-            position: static;
+            position: sticky;
             top: 100px;
           }
+
           .actions {
             display: flex;
             justify-content: flex-end;

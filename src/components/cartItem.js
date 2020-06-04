@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { NumberInput } from "./input";
 import { TiTimes } from "react-icons/ti";
 import Context from "../store/context";
-import { removeCartItem } from "../utils/api";
+import { removeCartItem } from "../utils/cartActions";
 import Link from "next/link";
 import { useUpdateEffect } from "../hooks";
 
@@ -10,21 +10,21 @@ export const CartItem = ({ item, prepareUpdate }) => {
   const [qty, setQty] = useState(item.qty);
   const { globalDispatch } = useContext(Context);
 
-  async function deleteItem({ productId, size }) {
-    removeCartItem(productId, size).then((cart) =>
+  async function deleteItem() {
+    removeCartItem(item.id).then((cart) =>
       globalDispatch({ type: "SETCART", payload: cart })
     );
   }
 
   useUpdateEffect(() => {
-    prepareUpdate(item.productId, qty);
+    prepareUpdate(item.id, qty);
   }, [qty]);
 
   return (
     <>
       <tr className="cart-item">
         <td className="delete-icon">
-          <span onClick={() => deleteItem(item)}>
+          <span onClick={() => deleteItem()}>
             <TiTimes size={20} />
           </span>
         </td>
@@ -101,9 +101,15 @@ export const CartItem = ({ item, prepareUpdate }) => {
           text-align: center;
           width: 100%;
           margin: 0 20px;
+          font-family: "Catamaran";
+          text-transform: uppercase;
+          font-variant: small-caps;
         }
         .price {
           color: #888;
+          font-family: "Catamaran";
+          font-size: 20px;
+          font-weight: bold;
         }
         @media (min-width: 769px) {
           .product {

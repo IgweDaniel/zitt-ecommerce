@@ -14,7 +14,7 @@ import { Modal } from "./modal";
 import { QuickCart } from "./quickCart";
 import Context from "../store/context";
 import { ProductView } from "../components";
-import { getCart } from "../utils/api";
+import { getCart } from "../utils/cartActions";
 
 Router.onRouteChangeStart = (url) => NProgress.start();
 Router.onRouteChangeComplete = () => NProgress.done();
@@ -38,11 +38,19 @@ export const Layout = ({ page = "Home", ...props }) => {
     globalDispatch({
       type: "UNSETPRODUCT",
     });
+
+  function syncCartState(e) {
+    if (e.key == "zitt_cart")
+      globalDispatch({ type: "SETCART", payload: JSON.parse(e.newValue) });
+  }
   useEffect(() => {
+    window.addEventListener("storage", syncCartState);
     document.body.style.overflowY = "auto";
+
     getCart().then((cart) =>
       globalDispatch({ type: "SETCART", payload: cart })
     );
+    return () => window.removeEventListener("storage", syncCartState);
   }, []);
 
   const NAV_HEIGHT = breakpoint > width ? 50 : 85;
@@ -70,7 +78,7 @@ export const Layout = ({ page = "Home", ...props }) => {
         <div>{props.children}</div>
       </div>
       <Modal position="right" open={cartOpen} closeModal={handleCartState}>
-        <QuickCart fetch={cartOpen} />
+        <QuickCart />
       </Modal>
       <ProductView productEl={product} reset={closeProduct} />
       <footer>
