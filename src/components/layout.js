@@ -14,6 +14,7 @@ import { Modal } from "./modal";
 import { QuickCart } from "./quickCart";
 import Context from "../store/context";
 import { ProductView } from "../components";
+import { getCart } from "../utils/api";
 
 Router.onRouteChangeStart = (url) => NProgress.start();
 Router.onRouteChangeComplete = () => NProgress.done();
@@ -32,12 +33,16 @@ export const Layout = ({ page = "Home", ...props }) => {
   function handleCartState() {
     setCartOpen((state) => !state);
   }
+
   const closeProduct = () =>
     globalDispatch({
       type: "UNSETPRODUCT",
     });
   useEffect(() => {
     document.body.style.overflowY = "auto";
+    getCart().then((cart) =>
+      globalDispatch({ type: "SETCART", payload: cart })
+    );
   }, []);
 
   const NAV_HEIGHT = breakpoint > width ? 50 : 85;
@@ -110,7 +115,7 @@ export const Layout = ({ page = "Home", ...props }) => {
             color: initial;
           }
           .no-desktop {
-            display: none;
+            display: none !important;
           }
         }
 

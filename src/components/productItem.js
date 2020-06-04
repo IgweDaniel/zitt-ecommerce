@@ -5,14 +5,14 @@ import axios from "axios";
 
 import Link from "next/link";
 import { addCartItem } from "../utils/api";
-export const ProductItem = ({ viewProduct, product }) => {
+export const ProductItem = ({ product }) => {
   const {
     globalState: { cart },
     globalDispatch,
   } = useContext(Context);
 
   const addToCart = async () => {
-    addCartItem(product).then((cart) =>
+    addCartItem(product, product.sizes[0]).then((cart) =>
       globalDispatch({ type: "SETCART", payload: cart })
     );
   };

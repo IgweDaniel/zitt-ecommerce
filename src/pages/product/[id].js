@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Layout, Spinner, ProductItem } from "../../components";
 import Error from "next/error";
 import Select from "react-select";
 import { client } from "../../utils/contentful";
 import Rcarousel from "../../components/Rcarousel";
 import { NumberInput } from "../../components/input";
-import axios from "axios";
+
+import { addCartItem } from "../../utils/api";
+import Context from "../../store/context";
 
 export default function ({ product, errorCode }) {
   if (errorCode) {
     return <Error statusCode={errorCode} />;
   }
+  const { globalDispatch } = useContext(Context);
 
   if (product) {
     const {
@@ -26,11 +29,13 @@ export default function ({ product, errorCode }) {
     const [qty, setQty] = useState(1);
     const [relatedProducts, setrelatedProducts] = useState(null);
 
-    const addToCart = async (product) => {
-      const {
-        data: { data },
-      } = await axios.post("/api/cart", product);
-      console.log(data);
+    const addToCart = async () => {
+      console.log(currsize);
+
+      addCartItem({ ...fields, id }, currsize.value, qty).then((cart) =>
+        globalDispatch({ type: "SETCART", payload: cart })
+      );
+
       setQty(1);
     };
 
@@ -121,16 +126,7 @@ export default function ({ product, errorCode }) {
                   </div>
                   <button
                     className="item-add"
-                    onClick={() =>
-                      addToCart({
-                        name: fields.name,
-                        productId: id,
-                        price: fields.price,
-                        qty,
-                        size: currsize.value,
-                        img: fields.images[1].fields.file.url,
-                      })
-                    }
+                    onClick={() => addToCart(product)}
                   >
                     add to cart
                   </button>

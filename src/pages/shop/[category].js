@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState } from "react";
 import { withRouter } from "next/router";
 import Error from "next/error";
 import Link from "next/link";
@@ -18,10 +18,8 @@ import {
 
 import { ShopBannerIcon } from "../../components/svgIcons.js";
 import { useOnScreen, useUpdateEffect } from "../../hooks/index.js";
-import Context from "../../store/context";
-import axios from "axios";
+
 import { useFilter } from "../../hooks/useFilter";
-import { getCart } from "../../utils/api";
 
 const DEFAULT_PRICE = [9, 180];
 const DEFAULT_CATEGORY = "all";
@@ -32,8 +30,6 @@ const Shop = ({ router, availableCategories, errorCode }) => {
   if (errorCode) {
     return <Error statusCode={errorCode} />;
   }
-
-  const { globalDispatch } = useContext(Context);
 
   const {
     updatePrice,
@@ -74,7 +70,6 @@ const Shop = ({ router, availableCategories, errorCode }) => {
   const {
     status,
     data,
-    isFetching,
     isFetchingMore,
     fetchMore,
     canFetchMore = false,
@@ -91,12 +86,6 @@ const Shop = ({ router, availableCategories, errorCode }) => {
       },
     }
   );
-
-  useEffect(() => {
-    getCart().then((cart) =>
-      globalDispatch({ type: "SETCART", payload: cart })
-    );
-  }, []);
 
   useUpdateEffect(() => {
     if (isOnScreen && canFetchMore) {

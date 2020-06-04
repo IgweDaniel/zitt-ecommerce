@@ -1,34 +1,32 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { NumberInput } from "./input";
 import { TiTimes } from "react-icons/ti";
 import Context from "../store/context";
-import axios from "axios";
+import { removeCartItem } from "../utils/api";
 import Link from "next/link";
-import { BinIcon } from "./svgIcons";
+import { useUpdateEffect } from "../hooks";
 
-export const CartItem = ({ item }) => {
+export const CartItem = ({ item, prepareUpdate }) => {
   const [qty, setQty] = useState(item.qty);
   const { globalDispatch } = useContext(Context);
 
   async function deleteItem({ productId, size }) {
-    const {
-      data: { data },
-    } = await axios.delete("/api/cart", {
-      data: {
-        productId,
-        size,
-      },
-    });
-
-    globalDispatch({ type: "SETCART", payload: data.cart });
+    removeCartItem(productId, size).then((cart) =>
+      globalDispatch({ type: "SETCART", payload: cart })
+    );
   }
-  console.log(item);
+
+  useUpdateEffect(() => {
+    prepareUpdate(item.productId, qty);
+  }, [qty]);
 
   return (
     <>
       <tr className="cart-item">
         <td className="delete-icon">
-          <TiTimes size={20} />
+          <span onClick={() => deleteItem(item)}>
+            <TiTimes size={20} />
+          </span>
         </td>
         <td className="product">
           <div className="img-container">
@@ -43,7 +41,7 @@ export const CartItem = ({ item }) => {
           <span className="no-desktop">Price</span>${item.price}
         </td>
         <td>
-          <NumberInput value={qty} onChange={setQty} />
+          <NumberInput min={1} value={qty} onChange={setQty} />
         </td>
         <td>
           <span className="no-desktop">subtotal</span>${item.qty * item.price}

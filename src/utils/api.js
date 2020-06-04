@@ -1,37 +1,63 @@
-import axios from "axios";
+const cart_obj = {
+  items: [],
+  map: [],
+  size: 0,
+  subTotal: 0,
+};
 
+const defaultCartState = JSON.stringify(cart_obj);
 export async function getCart() {
-  const {
-    data: { data },
-  } = await axios.get("/api/cart");
-
-  return data.cart;
+  const obj_string = localStorage.getItem("zitt_cart") || defaultCartState;
+  const cart = JSON.parse(obj_string);
+  return cart;
 }
 
-export async function addCartItem(product) {
-  const {
-    data: { data },
-  } = await axios.post("/api/cart", {
-    name: product.name,
-    productId: product.id,
-    price: product.price,
-    qty: 1,
-    size: "X",
-    img: product.images[1].fields.file.url,
-  });
-  console.log(data);
+export async function addCartItem(product, size, qty = 1) {
+  const productId = `${size}${product.id}`;
+  const obj_string = localStorage.getItem("zitt_cart") || defaultCartState;
+  const cart = JSON.parse(obj_string);
+  const item = cart.items.find((item) => item.productId == productId);
 
-  return data.cart;
+  if (item) {
+    item.qty += qty;
+  } else {
+    cart.items.push({
+      name: product.name,
+      productId,
+      price: product.price,
+      qty,
+      size,
+      img: product.images[1].fields.file.url,
+    });
+    cart.map.push(product.id);
+  }
+  cart.size += qty;
+  cart.subTotal += product.price * qty;
+
+  localStorage.setItem("zitt_cart", JSON.stringify(cart));
+  return cart;
 }
 
-export async function updateCart(product, action) {
-  return;
+export async function updateCart(cart) {
+  localStorage.setItem("zitt_cart", JSON.stringify(cart));
+  return cart;
+}
+export async function emptyCart() {
+  localStorage.setItem("zitt_cart", defaultCartState);
+  return cart_obj;
 }
 
-export async function emptyCart(product) {
-  const {
-    data: { data },
-  } = await axios.delete("/api/cart");
+export async function removeCartItem(productId, size) {
+  const obj_string = localStorage.getItem("zitt_cart") || defaultCartState;
+  const cart = JSON.parse(obj_string);
 
-  return data.cart;
+  const idx = cart.items.findIndex((item) => item.productId == productId);
+
+  const item = cart.items.splice(idx, 1)[0];
+
+  cart.size -= item.qty;
+  cart.subTotal -= item.qty * item.price;
+  delete cart.map[item.productId];
+  localStorage.setItem("zitt_cart", JSON.stringify(cart));
+  return cart;
 }

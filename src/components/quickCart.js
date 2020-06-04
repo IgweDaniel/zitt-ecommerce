@@ -14,12 +14,6 @@ export const QuickCart = ({ fetch }) => {
     const cart = await updateCart({ productId, size }, "delete");
     globalDispatch({ type: "SETCART", payload: cart });
   }
-  useEffect(() => {
-    if (fetch)
-      getCart().then((cart) =>
-        globalDispatch({ type: "SETCART", payload: cart })
-      );
-  }, [fetch]);
 
   return (
     <>

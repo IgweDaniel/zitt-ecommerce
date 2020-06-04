@@ -3,8 +3,10 @@ import Link from "next/link";
 import { useState, useContext, useEffect } from "react";
 import Context from "../store/context.js";
 import { CartItem } from "../components";
-import { getCart, emptyCart } from "../utils/api.js";
-import { BagIcon, CartBannerIcon } from "../components/svgIcons.js";
+import { emptyCart, updateCart } from "../utils/api.js";
+import { CartBannerIcon } from "../components/svgIcons.js";
+
+import { FiRefreshCw } from "react-icons/fi";
 
 export default () => {
   const {
@@ -12,18 +14,28 @@ export default () => {
     globalState: { cart },
   } = useContext(Context);
 
-  useEffect(() => {
-    getCart().then((cart) =>
-      globalDispatch({ type: "SETCART", payload: cart })
-    );
-  }, []);
+  const [pendingCart, setPendingCart] = useState(cart);
 
-  function clearCart() {
-    emptyCart().then((cart) =>
+  function prepareUpdate(productId, qty) {
+    let updateCart;
+    if (!pendingCart) updateCart = { ...cart };
+    else updateCart = { ...pendingCart };
+
+    const item = updateCart.items.find((item) => item.productId == productId);
+    updateCart.size -= item.qty;
+    updateCart.subTotal -= item.price * item.qty;
+    item.qty = qty;
+    updateCart.size += qty;
+    updateCart.subTotal += item.price * qty;
+    setPendingCart(updateCart);
+  }
+
+  function update() {
+    updateCart(pendingCart).then((cart) =>
       globalDispatch({ type: "SETCART", payload: cart })
     );
   }
-  console.log(cart);
+
   return (
     <Layout>
       <div className="banner">
@@ -48,6 +60,7 @@ export default () => {
                     <tbody>
                       {cart.items.map((item) => (
                         <CartItem
+                          prepareUpdate={prepareUpdate}
                           key={`${item.productId}${item.size}`}
                           item={item}
                         />
@@ -55,10 +68,12 @@ export default () => {
                     </tbody>
                   </table>
                   <div className="actions">
-                    <button onClick={clearCart}>clear cart</button>
-                    <Link href="/shop/[category]" as="/shop/all">
-                      <button>back to shop</button>
-                    </Link>
+                    <div className="update-button" onClick={() => update()}>
+                      <span className="icon">
+                        <FiRefreshCw size={20} color="#000" />
+                      </span>
+                      <span className="label">Update</span>
+                    </div>
                   </div>
                 </div>
                 <div className="cart-total">
@@ -117,6 +132,11 @@ export default () => {
         thead tr {
           display: grid;
           grid-template-columns: 1fr 100px 100px 100px;
+          align-content: center;
+        }
+        .cart-total-header {
+          display: flex;
+          align-items: center;
         }
         .cart-total-header,
         thead tr {
@@ -124,7 +144,7 @@ export default () => {
           font-family: "Catamaran";
           text-transform: uppercase;
           font-variant: small-caps;
-          border-bottom: 2px solid #888;
+          border-bottom: 2px solid #e0e0e0;
         }
 
         .cart-total {
@@ -170,6 +190,34 @@ export default () => {
           margin: 3px 0;
           width: 100%;
         }
+        .update-button {
+          cursor: pointer;
+          font-family: "Catamaran";
+          font-variant: small-caps;
+          font-size: 18px;
+          height: 40px;
+          text-transform: lowercase;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 130px;
+          border: 2px solid #000;
+          padding: 5px;
+        }
+        .update-button .icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 20%;
+        }
+
+        .update-button .label {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 80%;
+          text-align: center;
+        }
         @media (min-width: 769px) {
           .banner h1 {
             font-size: 60px;
@@ -186,7 +234,7 @@ export default () => {
           }
           .cart-items {
             width: 68%;
-            border-right: 2px solid #888;
+            border-right: 2px solid #e0e0e0;
             padding-right: 20px;
           }
           .cart-total {
@@ -201,10 +249,11 @@ export default () => {
           }
           .actions {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             flex-direction: row;
           }
+
           .actions button {
             width: initial;
           }

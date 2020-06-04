@@ -58,7 +58,7 @@ export const NavBar = ({ color = "#fff", height, events, ...props }) => {
         </ul>
 
         <ul className="actions">
-          <li onClick={events.cart}>
+          <li onClick={events.cart} className="cart-action">
             <CartIcon size={ICON_SIZE} />
             {cart && <span className="cart-size">{cart.size}</span>}
           </li>
@@ -74,7 +74,7 @@ export const NavBar = ({ color = "#fff", height, events, ...props }) => {
           <li>
             <SearchIcon size={ICON_SIZE} />
           </li>
-          <li className="no-desktop">
+          <li className="no-desktop menu-action">
             <AiOutlineMenu size={ICON_SIZE} />
           </li>
         </ul>
@@ -114,13 +114,33 @@ export const NavBar = ({ color = "#fff", height, events, ...props }) => {
           list-style: none;
           margin: 0 5px;
           cursor: pointer;
+          display: flex;
+          align-items: center;
+        }
+        .cart-action {
+          width: 80px;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
         }
         .cart-size {
           font-family: "Catamaran";
           font-variant: small-caps;
+
+          background: #ef8e74;
+          color: #fff;
+          height: 20px;
+          width: 20px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
         @media (min-width: 769px) {
+          .actions li.menu-action {
+            display: none;
+          }
           nav.main {
             grid-template-columns: 1fr repeat(3, 1fr);
             background-color: ${color};
