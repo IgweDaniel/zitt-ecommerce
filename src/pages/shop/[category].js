@@ -12,7 +12,7 @@ import {
   Filter,
   Spinner,
   Layout,
-  CatalougeItem,
+  ProductSet,
   MutedInfo,
 } from "../../components";
 
@@ -167,7 +167,7 @@ const Shop = ({ router, availableCategories, errorCode }) => {
               )
             ) : (
               data.map((group, i) => {
-                return <CatalougeItem key={i} products={group} />;
+                return <ProductSet key={i} products={group} />;
               })
             )}
 

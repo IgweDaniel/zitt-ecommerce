@@ -1,86 +1,82 @@
 import React, { useEffect, useRef } from "react";
 
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { useUpdateEffect } from "../hooks";
 
-const Rcarousel = ({ children, renderThumbs }) => {
-  let sliderRef = useRef(null),
-    thumbsRef = useRef(null),
-    allowShiftRef = useRef(true),
-    indexRef = useRef(1),
+const ProductCarousel = ({ children, renderThumbs, deps = [] }) => {
+  let slider = null,
+    thumbs = null,
+    allowShift = true,
+    index = 1,
     itemWidthRef = useRef(0);
 
   function checkIndex() {
     const Lenght = children.length;
+    slider.classList.remove("shifting");
+    if (index == 0) {
+      slider.style.left = `-${Lenght * itemWidthRef.current}px`;
 
-    sliderRef.current.classList.remove("shifting");
-    if (indexRef.current == 0) {
-      sliderRef.current.style.left = `-${Lenght * itemWidthRef.current}px`;
-
-      indexRef.current = Lenght;
-    } else if (indexRef.current == Lenght + 1) {
-      sliderRef.current.style.left = `-${itemWidthRef.current}px`;
-      indexRef.current = 1;
+      index = Lenght;
+    } else if (index == Lenght + 1) {
+      slider.style.left = `-${itemWidthRef.current}px`;
+      index = 1;
     }
     if (renderThumbs) {
-      Array.from(thumbsRef.current.children).forEach((element) => {
-        element.classList.remove("current");
-      });
-      thumbsRef.current.children[indexRef.current - 1].classList.add("current");
+      resetThumbs();
+      thumbs.children[index - 1].classList.add("current");
     }
-    allowShiftRef.current = true;
+    allowShift = true;
   }
 
   function setIndex(i) {
-    if (allowShiftRef.current) {
-      sliderRef.current.classList.add("shifting");
-      indexRef.current = i;
-      sliderRef.current.style.left = `-${
-        itemWidthRef.current * indexRef.current
-      }px`;
+    if (allowShift) {
+      slider.classList.add("shifting");
+      index = i;
+      slider.style.left = `-${itemWidthRef.current * index}px`;
     }
-    allowShiftRef.current = false;
+    allowShift = false;
   }
   function shiftSlide(dir, action) {
-    sliderRef.current.classList.add("shifting");
-    if (allowShiftRef.current) {
+    slider.classList.add("shifting");
+    if (allowShift) {
       if (dir == 1) {
-        indexRef.current += 1;
-        sliderRef.current.style.left = `-${
-          itemWidthRef.current * indexRef.current
-        }px`;
+        index += 1;
+        slider.style.left = `-${itemWidthRef.current * index}px`;
       } else if (dir == -1) {
-        indexRef.current -= 1;
-        sliderRef.current.style.left = `-${
-          itemWidthRef.current * indexRef.current
-        }px`;
+        index -= 1;
+        slider.style.left = `-${itemWidthRef.current * index}px`;
       }
     }
-    allowShiftRef.current = false;
+    allowShift = false;
   }
-
-  useEffect(() => {
-    if (children) {
-      const {
-        width,
-      } = sliderRef.current.firstElementChild.getBoundingClientRect();
-      itemWidthRef.current = width;
-      const cloneFirst = sliderRef.current.firstElementChild.cloneNode(true),
-        cloneLast = sliderRef.current.lastElementChild.cloneNode(true);
-      sliderRef.current.appendChild(cloneFirst);
-      sliderRef.current.prepend(cloneLast);
-      sliderRef.current.style.left = `-${itemWidthRef.current}px`;
-
-      sliderRef.current.addEventListener("transitionend", checkIndex);
-      if (renderThumbs)
-        thumbsRef.current.children[indexRef.current - 1].classList.add(
-          "current"
-        );
+  function resetThumbs() {
+    Array.from(thumbs.children).forEach((element) => {
+      element.classList.remove("current");
+    });
+  }
+  function resetDom() {
+    if (renderThumbs) {
+      resetThumbs();
     }
-    return () => {
-      if (sliderRef.current)
-        sliderRef.current.removeEventListener("transitionend", checkIndex);
-    };
-  }, []);
+    Array.from(slider.querySelectorAll(".clone")).forEach((el) => {
+      slider.removeChild(el);
+    });
+  }
+  useEffect(() => {
+    resetDom();
+
+    const { width } = slider.firstElementChild.getBoundingClientRect();
+    itemWidthRef.current = width;
+    const cloneFirst = slider.firstElementChild.cloneNode(true),
+      cloneLast = slider.lastElementChild.cloneNode(true);
+    cloneFirst.classList.add("clone");
+    cloneLast.classList.add("clone");
+    slider.appendChild(cloneFirst);
+    slider.prepend(cloneLast);
+    slider.style.left = `-${itemWidthRef.current}px`;
+
+    if (renderThumbs) thumbs.children[index - 1].classList.add("current");
+  }, [...deps]);
 
   return (
     <>
@@ -95,7 +91,11 @@ const Rcarousel = ({ children, renderThumbs }) => {
             </span>
           </div>
 
-          <section className="slider" ref={sliderRef}>
+          <section
+            onTransitionEnd={checkIndex}
+            className="slider"
+            ref={(el) => (slider = el)}
+          >
             {children &&
               children.map((child, i) => (
                 <div style={{ width: "100%", flexShrink: 0 }} key={i}>
@@ -105,7 +105,7 @@ const Rcarousel = ({ children, renderThumbs }) => {
           </section>
         </div>
         {renderThumbs && (
-          <div className="thumbs" ref={thumbsRef}>
+          <div className="thumbs" ref={(el) => (thumbs = el)}>
             {children.map((child, i) => (
               <div
                 className="thumbnail"
@@ -228,4 +228,4 @@ const Rcarousel = ({ children, renderThumbs }) => {
   );
 };
 
-export default Rcarousel;
+export default ProductCarousel;

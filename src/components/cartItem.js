@@ -15,6 +15,7 @@ export const CartItem = ({ item, prepareUpdate }) => {
       globalDispatch({ type: "SETCART", payload: cart })
     );
   }
+  console.log(item.productId);
 
   useUpdateEffect(() => {
     prepareUpdate(item.id, qty);
@@ -28,15 +29,17 @@ export const CartItem = ({ item, prepareUpdate }) => {
             <TiTimes size={20} />
           </span>
         </td>
-        <td className="product">
-          <div className="img-container">
-            <img src={`https://${item.img}`} alt="" />
-          </div>
-          <div className="content">
-            <h4>{item.name}</h4>
-            <div>Size-{item.size}</div>
-          </div>
-        </td>
+        <Link href="/product/[id]" as={`/product/${item.productId}`}>
+          <td className="product">
+            <div className="img-container">
+              <img src={`https://${item.img}`} alt="" />
+            </div>
+            <div className="content">
+              <h4>{item.name}</h4>
+              <div>Size-{item.size}</div>
+            </div>
+          </td>
+        </Link>
         <td className="price">
           <span className="no-desktop">Price</span>${item.price}
         </td>
@@ -59,7 +62,7 @@ export const CartItem = ({ item, prepareUpdate }) => {
           padding-bottom: 10px;
         }
         .img-container {
-          height: 140px;
+          height: 150px;
           width: 100%;
           max-width: 140px;
           margin-bottom: 5px;
@@ -80,8 +83,9 @@ export const CartItem = ({ item, prepareUpdate }) => {
           justify-content: center;
           flex-direction: column;
           width: 100%;
-          height: 200px;
+          height: 230px;
           margin: 0px;
+          cursor: pointer;
         }
         td {
           display: flex;
@@ -100,7 +104,7 @@ export const CartItem = ({ item, prepareUpdate }) => {
           /* flex: 1; */
           text-align: center;
           width: 100%;
-          margin: 0 20px;
+          margin: 5px 20px;
           font-family: "Catamaran";
           text-transform: uppercase;
           font-variant: small-caps;

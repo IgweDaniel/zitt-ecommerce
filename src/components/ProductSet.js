@@ -1,7 +1,7 @@
 import React from "react";
 import { ProductItem } from "./productItem";
 
-export const CatalougeItem = ({ products }) => {
+export const ProductSet = ({ products }) => {
   return (
     <div className="catalouge-items">
       {products.items.map((product) => (

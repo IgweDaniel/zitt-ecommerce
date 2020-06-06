@@ -13,7 +13,7 @@ import { NavBar } from "./navBar";
 import { Modal } from "./modal";
 import { QuickCart } from "./quickCart";
 import Context from "../store/context";
-import { ProductView } from "../components";
+import { QuickProductView } from "../components";
 import { getCart } from "../utils/cartActions";
 
 Router.onRouteChangeStart = (url) => NProgress.start();
@@ -80,7 +80,7 @@ export const Layout = ({ page = "Home", ...props }) => {
       <Modal position="right" open={cartOpen} closeModal={handleCartState}>
         <QuickCart />
       </Modal>
-      <ProductView productEl={product} reset={closeProduct} />
+      <QuickProductView productEl={product} reset={closeProduct} />
       <footer>
         <ul className="social-icons">
           <li>

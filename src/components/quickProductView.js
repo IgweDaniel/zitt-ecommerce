@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { TimelineLite, Power2 } from "gsap";
 
-import Rcarousel from "./Rcarousel";
+import ProductCarousel from "./ProductCarousel";
 
-export const ProductView = ({
+export const QuickProductView = ({
   productEl: { coords, url, inview, product, el },
   reset,
 }) => {
@@ -83,7 +83,7 @@ export const ProductView = ({
       >
         <section className="img-wrapper" ref={(el) => (imgSection = el)}>
           {show ? (
-            <Rcarousel inview={inview} renderThumbs={false}>
+            <ProductCarousel inview={inview} renderThumbs={false}>
               {product &&
                 product.images.map((img, index) => (
                   <img
@@ -97,7 +97,7 @@ export const ProductView = ({
                     src={`https://${img.fields.file.url}`}
                   />
                 ))}
-            </Rcarousel>
+            </ProductCarousel>
           ) : (
             <img
               style={{

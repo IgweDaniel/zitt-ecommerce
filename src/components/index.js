@@ -1,4 +1,4 @@
-export { CatalougeItem } from "./catalougeItem";
+export { ProductSet } from "./ProductSet";
 export { Filter } from "./filter";
 export { Layout } from "./layout";
 export { Modal } from "./modal";
@@ -6,7 +6,7 @@ export { NavBar } from "./navBar";
 export { ProductItem } from "./productItem";
 export { QuickCart } from "./quickCart";
 export { Spinner } from "./spinner";
-export { ProductView } from "./productView";
+export { QuickProductView } from "./quickProductView";
 export { Input } from "./input";
 export { MutedInfo } from "./mutedInfo";
 export { CartItem } from "./cartItem";

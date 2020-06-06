@@ -7,6 +7,7 @@ import { emptyCart, updateCart } from "../utils/cartActions.js";
 import { CartBannerIcon } from "../components/svgIcons.js";
 
 import { FiRefreshCw } from "react-icons/fi";
+import { RiShoppingCartLine } from "react-icons/ri";
 
 export default () => {
   const {
@@ -96,7 +97,13 @@ export default () => {
                 </div>
               </div>
             ) : (
-              <h1>No items in Cart</h1>
+              <div className="empty-cart">
+                <RiShoppingCartLine size={80} />
+                <h2>No items in Cart</h2>
+                <Link href="/shop/[category]" as="/shop/all">
+                  <button>back to shop</button>
+                </Link>
+              </div>
             )}
           </>
         )}
@@ -125,9 +132,17 @@ export default () => {
         main {
           margin: 50px 0;
         }
+
+        .empty-cart {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
         .wrapper {
           margin: 30px auto;
         }
+
         table {
           width: 100%;
           height: 100%;
