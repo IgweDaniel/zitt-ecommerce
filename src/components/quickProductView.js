@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { TimelineLite, Power2, CSSPlugin } from "gsap";
+import { TimelineLite, Power2, gsap } from "gsap";
+import { CSSPlugin } from "gsap/CSSPlugin";
 gsap.registerPlugin(CSSPlugin);
 import ProductCarousel from "./ProductCarousel";
 
