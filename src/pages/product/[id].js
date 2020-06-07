@@ -13,7 +13,6 @@ export default function ({ product, errorCode }) {
   if (errorCode) {
     return <Error statusCode={errorCode} />;
   }
-  // console.log(product.fields.name);
 
   if (!product) return <Spinner />;
 
