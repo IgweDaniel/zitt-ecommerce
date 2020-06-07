@@ -13,7 +13,6 @@ require("dotenv").config();
 
 module.exports = {
   env: {
-    address,
     contentfulSpaceId: process.env["CMS_ID"],
     contentfulAccessToken: process.env["CMS_ACCESS_TOKEN"],
   },
