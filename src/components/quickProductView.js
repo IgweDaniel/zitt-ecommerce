@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { TimelineLite, Power2, gsap } from "gsap";
-import { CSSPlugin } from "gsap/CSSPlugin";
-gsap.registerPlugin(CSSPlugin);
+import { TimelineLite, Power2, CSSPlugin, gsap } from "gsap";
+
 import ProductCarousel from "./ProductCarousel";
+gsap.registerPlugin(CSSPlugin);
 
 export const QuickProductView = ({
   productEl: { coords, url, inview, product, el },

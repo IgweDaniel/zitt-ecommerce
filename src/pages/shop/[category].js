@@ -54,17 +54,24 @@ const Shop = ({ router, availableCategories, errorCode }) => {
         ? ""
         : availableCategories.find((cat) => cat.name == category);
     let obj = { "fields.sizes[in]": size };
+
     if (size == DEFAULT_SIZE) delete obj["fields.sizes[in]"];
-    const entries = await client.getEntries({
-      limit: PRODUCT_LIMIT,
-      links_to_entry: id,
-      skip: offset,
-      "fields.price[lte]": maxprice,
-      content_type: "product",
-      "fields.price[gte]": minprice,
-      ...obj,
-      include: 2,
-    });
+    let entries = null;
+    try {
+      entries = await client.getEntries({
+        limit: PRODUCT_LIMIT,
+        links_to_entry: id,
+        skip: offset,
+        "fields.price[lte]": maxprice,
+        content_type: "product",
+        "fields.price[gte]": minprice,
+        ...obj,
+        include: 2,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
     return entries;
   }
   const {

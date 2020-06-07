@@ -1,5 +1,4 @@
-// require("dotenv").config();
-
+const { PHASE_DEVELOPMENT_SERVER } = require("next/constants");
 // const os = require("os");
 // const ifaces = os.networkInterfaces();
 // let address = null;
@@ -10,10 +9,16 @@
 
 //   if (iface.length > 0) address = iface[0].address;
 // }
+module.exports = (phase, { defaultConfig }) => {
+  if (phase === PHASE_DEVELOPMENT_SERVER) {
+    require("dotenv").config();
+  }
 
-module.exports = {
-  env: {
-    contentfulSpaceId: process.env["CMS_ID"],
-    contentfulAccessToken: process.env["CMS_ACCESS_TOKEN"],
-  },
+  return {
+    ...defaultConfig,
+    env: {
+      contentfulSpaceId: process.env["CMS_ID"],
+      contentfulAccessToken: process.env["CMS_ACCESS_TOKEN"],
+    },
+  };
 };
