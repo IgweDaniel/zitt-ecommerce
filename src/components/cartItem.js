@@ -1,10 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
 import { NumberInput } from "./input";
 import { TiTimes } from "react-icons/ti";
+
 import Context from "../store/context";
 import { removeCartItem } from "../utils/cartActions";
 import Link from "next/link";
 import { useUpdateEffect } from "../hooks";
+import { BinIcon } from "./svgIcons";
 
 export const CartItem = ({ item, prepareUpdate }) => {
   const [qty, setQty] = useState(item.qty);
@@ -26,7 +28,7 @@ export const CartItem = ({ item, prepareUpdate }) => {
       <tr className="cart-item">
         <td className="delete-icon">
           <span onClick={() => deleteItem()}>
-            <TiTimes size={20} />
+            <BinIcon size={18} />
           </span>
         </td>
         <Link href="/product/[id]" as={`/product/${item.productId}`}>
@@ -76,6 +78,7 @@ export const CartItem = ({ item, prepareUpdate }) => {
         .delete-icon {
           position: absolute;
           right: 0;
+          cursor: pointer;
         }
         .product {
           display: flex;

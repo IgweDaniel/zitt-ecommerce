@@ -45,16 +45,6 @@ export const NavBar = ({ color = "#fff", height, events, ...props }) => {
               <a>SHOP</a>
             </Link>
           </li>
-          <li>
-            <Link href="/">
-              <a>BLOG</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/">
-              <a>FAQ</a>
-            </Link>
-          </li>
         </ul>
 
         <ul className="actions">
@@ -158,7 +148,7 @@ export const NavBar = ({ color = "#fff", height, events, ...props }) => {
 
           .links {
             justify-self: center;
-            width: 300px;
+            width: 150px;
             grid-column: span 2;
             display: flex;
             align-items: center;
@@ -169,8 +159,7 @@ export const NavBar = ({ color = "#fff", height, events, ...props }) => {
             font-weight: bold;
             text-align: center;
             width: 100%;
-            font-size: 14px;
-
+            font-size: 16px;
             display: flex;
             align-items: center;
             justify-content: center;

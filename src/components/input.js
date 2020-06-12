@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { CheckMarkIcon } from "./svgIcons";
 import { FiPlus, FiMinus } from "react-icons/fi";
 
-export const Input = ({ type, placeholder, name, onChange }) => {
+export const Input = ({ type, placeholder, name, multiline, onChange }) => {
   function handleFocus(e) {
     e.currentTarget.previousSibling.classList.add("focused");
   }
@@ -13,15 +13,19 @@ export const Input = ({ type, placeholder, name, onChange }) => {
   return (
     <>
       <div className="input-group">
-        <div className="input-label">{placeholder}</div>
-        <input
-          onChange={onChange}
-          autocomplete="off"
-          type={type}
-          name={name}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-        />
+        {!multiline && <div className="input-label">{placeholder}</div>}
+        {multiline ? (
+          <textarea rows="4" placeholder={placeholder} onChange></textarea>
+        ) : (
+          <input
+            onChange={onChange}
+            autoComplete="off"
+            type={type}
+            name={name}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
+        )}
       </div>
 
       <style jsx>{`
@@ -58,6 +62,14 @@ export const Input = ({ type, placeholder, name, onChange }) => {
           border: 1px solid #ccc;
           background-color: transparent;
           outline: none;
+        }
+        textarea {
+          font-variant: small-caps;
+          font-weight: bold;
+          font-family: "Catamaran", sans-serif;
+          font-size: 17px;
+          padding: 10px;
+          color: #888;
         }
       `}</style>
     </>
@@ -168,7 +180,7 @@ export const NumberInput = ({
       </div>
       <style jsx>{`
         .number-input {
-          height: 35px;
+          height: 33px;
           width: 100px;
           display: flex;
           align-items: center;
@@ -187,7 +199,8 @@ export const NumberInput = ({
         .control {
           cursor: pointer;
           background-color: #30292f;
-          border: 1px solid #30292f;
+
+          border-radius: 50%;
         }
       `}</style>
     </>

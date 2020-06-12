@@ -88,16 +88,6 @@ export default function ({ product, errorCode }) {
               {fields.sizes.includes("none") ? null : (
                 <div className="available-sizes">
                   <h6>AVAILABLE SIZES</h6>
-                  <ul>
-                    {fields.sizes.map((size, i) => (
-                      <li
-                        key={i}
-                        className={`${currsize.value == size ? "active" : ""}`}
-                      >
-                        {size}
-                      </li>
-                    ))}
-                  </ul>
                   <div className="size-input">
                     <Select
                       blurInputOnSelect={true}
@@ -217,28 +207,8 @@ export default function ({ product, errorCode }) {
         .available-sizes {
           margin: 20px 0;
         }
-        .available-sizes ul {
-          display: flex;
-          align-items: center;
-          flex-wrap: wrap;
-          flex-basis: 50px;
-        }
-        .available-sizes li {
-          margin: 10px 5px 0 0;
-          border: 0.5px solid #888;
-          font-family: "Catamaran";
-          width: 40px;
-          height: 40px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-weight: bold;
-          font-variant: small-caps;
-        }
-        .available-sizes li.active {
-          background: #000;
-          color: #fff;
-          border: "none";
+        .available-sizes h6 {
+          font-size: 16px;
         }
 
         .size-input {

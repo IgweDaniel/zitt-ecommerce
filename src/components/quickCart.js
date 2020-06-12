@@ -49,7 +49,9 @@ export const QuickCart = () => {
           <Link href="/cart">
             <button>view cart</button>
           </Link>
-          <button className="checkout">checkout</button>
+          <Link href="/checkout">
+            <button className="checkout">checkout</button>
+          </Link>
         </div>
       ) : (
         <div className="empty cart">

@@ -92,7 +92,9 @@ export default () => {
                     <div>
                       <span>Total:</span> <span>${cart.subTotal}</span>
                     </div>
-                    <button className="checkout">checkout</button>
+                    <Link href="/checkout">
+                      <button className="checkout">checkout</button>
+                    </Link>
                   </div>
                 </div>
               </div>
