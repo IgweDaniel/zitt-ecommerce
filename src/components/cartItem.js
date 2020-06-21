@@ -28,7 +28,7 @@ export const CartItem = ({ item, prepareUpdate }) => {
       <tr className="cart-item">
         <td className="delete-icon">
           <span onClick={() => deleteItem()}>
-            <BinIcon size={18} />
+            <BinIcon size={15} />
           </span>
         </td>
         <Link href="/product/[id]" as={`/product/${item.productId}`}>

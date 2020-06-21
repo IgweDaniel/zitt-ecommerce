@@ -16,7 +16,7 @@ const Checkout = () => {
     <Layout>
       <main>
         <div className="banner">
-          <CheckoutBannerIcon size={70} />
+          {/* <CheckoutBannerIcon size={70} /> */}
           <h1>Checkout</h1>
         </div>
         <div className={`checkout-info ${show ? "show" : ""}`}>
@@ -67,7 +67,7 @@ const Checkout = () => {
             <div className="input">
               <Input type="text" placeholder="email" name="email" />
             </div>
-
+            <CheckBox label="create a customer account" />
             <div className="input">
               <Input
                 type="text-area"
@@ -125,11 +125,11 @@ const Checkout = () => {
           margin: 0 auto;
           overflow: hidden;
           height: 50px;
-          transition: all 0.5s ease-in;
+          transition: all 0.5s ease-in-out;
         }
         .show {
           height: 300px;
-          transition: all 0.5s ease-in;
+          transition: all 0.5s ease-in-out;
         }
         .text {
           display: flex;

@@ -43,7 +43,7 @@ export default () => {
   return (
     <Layout>
       <div className="banner">
-        <CartBannerIcon size={40} />
+        {/* <CartBannerIcon size={40} /> */}
         <h1>Shopping Cart</h1>
       </div>
       <main>

@@ -79,10 +79,9 @@ export default function ({ product, errorCode }) {
               </div>
               <h1 className="name">{fields.name}</h1>
 
-              <h2 className="price">${fields.price}</h2>
+              <h2 className="price">Price: ${fields.price}</h2>
               <div className="description">
-                threm ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                A clothe that feels good on the skin as it does on the eyes.
               </div>
 
               {fields.sizes.includes("none") ? null : (
@@ -221,7 +220,10 @@ export default function ({ product, errorCode }) {
         }
         .product-info .price {
           margin: 5px 0;
-
+          font-weight: bold;
+          font-family: "Catamaran";
+          text-transform: uppercase;
+          font-variant: small-caps;
           color: #ef8e74;
         }
         .product-info .description {

@@ -28,7 +28,7 @@ export const QuickCart = () => {
                     className="icon remove-item"
                     onClick={() => deleteItem(item)}
                   >
-                    <BinIcon size={20} />
+                    <BinIcon size={15} />
                   </span>
                   <div className="item-image">
                     <img src={`https://${item.img}`} alt="" />
