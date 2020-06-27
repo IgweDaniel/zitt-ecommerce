@@ -38,7 +38,7 @@ export const CartItem = ({ item, prepareUpdate }) => {
             </div>
             <div className="content">
               <h4>{item.name}</h4>
-              <div>Size-{item.size}</div>
+              <div className="size">Size-{item.size}</div>
             </div>
           </td>
         </Link>
@@ -111,6 +111,9 @@ export const CartItem = ({ item, prepareUpdate }) => {
           font-family: "Catamaran";
           text-transform: uppercase;
           font-variant: small-caps;
+        }
+        .size {
+          color: #888;
         }
         .price {
           color: #888;

@@ -6,6 +6,8 @@ export const categories = [
 
     img:
       "https://images.topman.com/i/TopMan/TM87J04RBLE_M_1.jpg?$w1000$&fmt=webp&qlt=80",
+    img:
+      "https://images.topman.com/i/TopMan/BUNDLE_87J16USTN87W16USTN_M_1.jpg?$w1300$&fmt=webp&qlt=80",
   },
   {
     id: 2,

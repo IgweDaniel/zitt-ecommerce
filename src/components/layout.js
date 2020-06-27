@@ -147,30 +147,29 @@ export const Layout = ({ page = "Home", ...props }) => {
           color: inherit;
         }
         button {
-          background-color: #ef8e74;
-          background-color: var(--themeColor);
-          color: #fff;
-          border: none;
+          /* background-color: #ef8e74; */
+          border: 2px solid var(--themeColor) !important;
+          background-color: transparent !important;
+          color: #000;
+
           box-shadow: none;
           height: 40px;
           min-width: 150px;
           padding: 0 12px;
           margin: 10px 0;
-          font-size: 15px;
+          font-size: 13px;
           cursor: pointer;
           outline: none;
           display: flex;
           align-items: center;
           justify-content: center;
-          text-transform: capitalize;
+          text-transform: uppercase;
           font-family: "Catamaran";
           font-weight: bold;
-          //box-shadow: -1px 3px 13px -2px rgba(0, 0, 0, 0.2);
-          // font-variant: small-caps;
-          //border-radius: 3px;
+          font-variant: small-caps;
         }
         button:active {
-          background-color: #0c0409 !important;
+          /* background-color: #0c0409 !important; */
           transition: all 0.2s ease-in;
         }
 

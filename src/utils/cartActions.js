@@ -61,7 +61,7 @@ export async function removeCartItem(itemId) {
   cart.subTotal -= item.qty * item.price;
   console.log(cart.map);
   const index = cart.map.findIndex((id) => id == item.productId);
-  delete cart.map[index];
+  cart.map.splice(index, 1);
   localStorage.setItem("zitt_cart", JSON.stringify(cart));
   return cart;
 }

@@ -46,11 +46,12 @@ export default () => {
         .auth {
           width: 80%;
           max-width: 800px;
-          height: 500px;
+
           background: #fff;
           display: flex;
           align-items: center;
           justify-content: center;
+          min-height: 800px;
         }
         .auth-inner {
           width: 100%;
@@ -63,7 +64,8 @@ export default () => {
           max-width: 300px;
         }
         .header-inner span {
-          border: 2px solid var(--themeColor);
+          border-bottom: 2px solid var(--themeColor);
+          border-bottom: 2px solid #ebebeb;
           flex: 1;
           display: inline-block;
           font-size: 20px;
@@ -78,8 +80,9 @@ export default () => {
         .header-inner span.active {
           background-color: #000;
           background-color: var(--themeColor);
-          border: 2px solid var(--themeColor);
-          color: #fff;
+          background-color: transparent;
+          border-bottom: 2px solid var(--themeColor);
+          color: #000;
         }
       `}</style>
     </>

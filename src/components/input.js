@@ -60,7 +60,10 @@ export const Input = ({ type, placeholder, name, multiline, onChange }) => {
           padding: 14px;
           border: none;
           border: 1px solid #ccc;
+          border: 1px solid #ccc;
+
           background-color: transparent;
+
           outline: none;
         }
         textarea {
@@ -70,6 +73,9 @@ export const Input = ({ type, placeholder, name, multiline, onChange }) => {
           font-size: 17px;
           padding: 10px;
           color: #888;
+          border: 1px solid #ebebeb;
+
+          outline: none;
         }
       `}</style>
     </>
@@ -99,7 +105,8 @@ export const CheckBox = ({ label, onChange }) => (
         height: 20px;
         width: 20px;
         background: transparent;
-        border: 2px solid #000;
+        border: 2px solid var(--themeColor);
+
         display: flex;
         align-items: center;
         justify-content: center;

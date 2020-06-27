@@ -46,7 +46,6 @@ export const Register = () => {
         form button {
           width: 50px;
           width: 100%;
-          height: 50px;
         }
         .action {
           display: flex;

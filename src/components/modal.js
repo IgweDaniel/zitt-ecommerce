@@ -83,7 +83,7 @@ export const Modal = ({
         .content.right,
         .content.left {
           width: 90%;
-          max-width: 350px;
+          max-width: 400px;
           background-color: #fff;
           border: 0.5px solid #eee;
         }

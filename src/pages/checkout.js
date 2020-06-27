@@ -45,28 +45,35 @@ const Checkout = () => {
           <div className="billing-form">
             <h2>Billing Details</h2>
 
-            <div className="input">
-              <Input type="text" placeholder="first name" name="firstname" />
-            </div>
+            <div className="input-group">
+              <div className="input">
+                <Input type="text" placeholder="first name" name="firstname" />
+              </div>
 
-            <div className="input">
-              <Input type="text" placeholder="last name" name="lastname" />
+              <div className="input">
+                <Input type="text" placeholder="last name" name="lastname" />
+              </div>
             </div>
-
             <div className="input">
-              <Input type="text" placeholder="street" name="street" />
+              <Input type="text" placeholder="email" name="email" />
             </div>
-
             <div className="input">
-              <Input type="text" placeholder="town" name="town" />
+              <Input type="text" placeholder="address" name="address" />
+            </div>
+            <div className="input-group">
+              <div className="input">
+                <Input type="text" placeholder="street" name="street" />
+              </div>
+
+              <div className="input">
+                <Input type="text" placeholder="town" name="town" />
+              </div>
             </div>
 
             <div className="input">
               <Input type="text" placeholder="zip" name="zip" />
             </div>
-            <div className="input">
-              <Input type="text" placeholder="email" name="email" />
-            </div>
+
             <CheckBox label="create a customer account" />
             <div className="input">
               <Input
@@ -93,10 +100,9 @@ const Checkout = () => {
                 <div>
                   <span>Total:</span> <span>${cart.subTotal}</span>
                 </div>
-                <Link href="/cart">
-                  <button className="cart">view cart</button>
-                </Link>
-                <button className="checkout">Pay Now</button>
+                <div className="actions">
+                  <button className="checkout">Place order</button>
+                </div>
               </div>
             </div>
           )}
@@ -155,9 +161,18 @@ const Checkout = () => {
           font-family: "Catamaran";
           text-transform: uppercase;
           font-variant: small-caps;
+          text-align: center;
         }
         .input {
           margin: 12px 0;
+        }
+        .input-group {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .input-group .input {
+          width: 48%;
         }
         .cart-total-header {
           display: flex;
@@ -177,7 +192,9 @@ const Checkout = () => {
           min-height: 300px;
         }
         .cart-totals-inner {
+          position: relative;
           width: 100%;
+          height: 100%;
         }
         .cart-total span {
           font-family: "Catamaran";
@@ -193,9 +210,8 @@ const Checkout = () => {
         }
         .actions {
           display: flex;
-          justify-content: center;
+          justify-content: space-between;
           align-items: center;
-          flex-direction: column;
         }
 
         button.checkout {
@@ -214,12 +230,30 @@ const Checkout = () => {
             flex-direction: row;
           }
           .billing-form {
-            width: 65%;
+            width: 66%;
+          }
+          .billing-form h2 {
+            text-align: left;
           }
           .cart-total {
-            padding: 0 10px;
-            width: 34%;
-            min-height: 300px;
+            padding: 20px 20px;
+            width: 30%;
+            height: 300px;
+            background-color: #fdfdfd;
+            border: 1px dashed #ccc;
+          }
+          .cart-totals-inner {
+            height: 100%;
+          }
+
+          .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            align-self: flex-end;
+            position: absolute;
+            width: 100%;
+            bottom: 80px;
           }
         }
       `}</style>

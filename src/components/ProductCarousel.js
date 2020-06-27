@@ -6,7 +6,7 @@ import { useUpdateEffect } from "../hooks";
 const ProductCarousel = ({ children, renderThumbs, deps = [] }) => {
   let slider = null,
     thumbs = null,
-    allowShift = true,
+    allowShiftRef = useRef(true),
     index = 1,
     itemWidthRef = useRef(0);
 
@@ -25,20 +25,20 @@ const ProductCarousel = ({ children, renderThumbs, deps = [] }) => {
       resetThumbs();
       thumbs.children[index - 1].classList.add("current");
     }
-    allowShift = true;
+    allowShiftRef.current = true;
   }
 
   function setIndex(i) {
-    if (allowShift) {
+    if (allowShiftRef.current) {
       slider.classList.add("shifting");
       index = i;
       slider.style.left = `-${itemWidthRef.current * index}px`;
     }
-    allowShift = false;
+    allowShiftRef.current = false;
   }
   function shiftSlide(dir, action) {
     slider.classList.add("shifting");
-    if (allowShift) {
+    if (allowShiftRef.current) {
       if (dir == 1) {
         index += 1;
         slider.style.left = `-${itemWidthRef.current * index}px`;
@@ -47,7 +47,7 @@ const ProductCarousel = ({ children, renderThumbs, deps = [] }) => {
         slider.style.left = `-${itemWidthRef.current * index}px`;
       }
     }
-    allowShift = false;
+    allowShiftRef.current = false;
   }
   function resetThumbs() {
     Array.from(thumbs.children).forEach((element) => {
