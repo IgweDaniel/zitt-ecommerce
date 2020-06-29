@@ -15,7 +15,11 @@ export const Input = ({ type, placeholder, name, multiline, onChange }) => {
       <div className="input-group">
         {!multiline && <div className="input-label">{placeholder}</div>}
         {multiline ? (
-          <textarea rows="4" placeholder={placeholder} onChange></textarea>
+          <textarea
+            rows="4"
+            placeholder={placeholder}
+            onChange={onChange}
+          ></textarea>
         ) : (
           <input
             onChange={onChange}
@@ -60,7 +64,6 @@ export const Input = ({ type, placeholder, name, multiline, onChange }) => {
           padding: 14px;
           border: none;
           border: 1px solid #ccc;
-          border: 1px solid #ccc;
 
           background-color: transparent;
 
@@ -68,12 +71,11 @@ export const Input = ({ type, placeholder, name, multiline, onChange }) => {
         }
         textarea {
           font-variant: small-caps;
-          font-weight: bold;
           font-family: "Catamaran", sans-serif;
           font-size: 17px;
           padding: 10px;
           color: #888;
-          border: 1px solid #ebebeb;
+          border: 1px solid #ccc;
 
           outline: none;
         }

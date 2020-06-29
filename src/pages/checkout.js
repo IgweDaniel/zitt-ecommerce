@@ -91,6 +91,20 @@ const Checkout = () => {
             <div className="cart-total">
               <h4 className="cart-total-header">cart totals</h4>
               <div className="cart-totals-inner">
+                <div className="products">
+                  {cart.items.map((item) => {
+                    return (
+                      <div className="product-item" key={item.id}>
+                        <span className="name">
+                          {item.name}- {item.size}
+                        </span>
+                        <span className="price">
+                          {item.qty} x ${item.price}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
                 <div>
                   <span>SubTotal:</span> <span>${cart.subTotal}</span>
                 </div>
@@ -187,7 +201,6 @@ const Checkout = () => {
         }
 
         .cart-total {
-          padding: 0 10px;
           width: 100%;
           min-height: 300px;
         }
@@ -208,6 +221,20 @@ const Checkout = () => {
           width: 100%;
           box-shadow: none;
         }
+        .products {
+          margin: 20px 0;
+        }
+
+        .products span {
+          display: block;
+        }
+        .products .name {
+          font-size: 14px;
+          color: #888;
+        }
+        .products .price {
+        }
+
         .actions {
           display: flex;
           justify-content: space-between;
@@ -238,12 +265,12 @@ const Checkout = () => {
           .cart-total {
             padding: 20px 20px;
             width: 30%;
-            height: 300px;
             background-color: #fdfdfd;
             border: 1px dashed #ccc;
           }
           .cart-totals-inner {
             height: 100%;
+            padding: 0 10px;
           }
 
           .actions {
@@ -251,9 +278,9 @@ const Checkout = () => {
             justify-content: space-between;
             align-items: center;
             align-self: flex-end;
-            position: absolute;
             width: 100%;
-            bottom: 80px;
+            /* position: absolute;
+            bottom: 80px; */
           }
         }
       `}</style>

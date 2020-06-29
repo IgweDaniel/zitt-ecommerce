@@ -95,6 +95,7 @@ export const QuickCart = () => {
         .cart.full button {
           width: 90%;
           margin: 0 auto 10px;
+          height: 40px;
         }
         .cart.full .total {
           font-family: "Catamaran";
