@@ -1,3 +1,4 @@
+import { Layout } from "../components";
 import GlobalStateProvider from "../store/globalStateProvider";
 
 // import axios from "axios";
@@ -28,7 +29,9 @@ import GlobalStateProvider from "../store/globalStateProvider";
 export default function MyApp({ Component, pageProps }) {
   return (
     <GlobalStateProvider>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </GlobalStateProvider>
   );
 }

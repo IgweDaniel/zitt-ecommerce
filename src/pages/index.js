@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Home = () => {
   return (
-    <Layout>
+    <>
       <main>
         <div className="banner">
           <img src="/badge-hello-summer.webp" alt="" />
@@ -116,7 +116,7 @@ const Home = () => {
           }
         }
       `}</style>
-    </Layout>
+    </>
   );
 };
 

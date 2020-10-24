@@ -101,7 +101,7 @@ const Shop = ({ router, availableCategories, errorCode }) => {
   }, [isOnScreen]);
 
   return (
-    <Layout>
+    <>
       <main>
         <Modal open={filterOpen} closeModal={handleFilterState}>
           <Filter
@@ -285,7 +285,7 @@ const Shop = ({ router, availableCategories, errorCode }) => {
           }
         }
       `}</style>
-    </Layout>
+    </>
   );
 };
 

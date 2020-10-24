@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useUpdateEffect } from "../hooks";
 
 export const Modal = ({
@@ -8,19 +8,21 @@ export const Modal = ({
   position = "left",
 }) => {
   const modalRef = useRef(null);
-  useUpdateEffect(() => {
+  const delay = 200;
+
+  useEffect(() => {
     if (open) {
-      document.body.style.overflow = "hidden";
+      // document.body.style.overflow = "hidden";
       modalRef.current.classList.add("open");
       setTimeout(() => {
         modalRef.current.classList.add("animate");
-      });
+      }, delay - 100);
     } else {
-      document.body.style.overflow = "auto";
+      // document.body.style.overflow = "auto";
       modalRef.current.classList.remove("animate");
       setTimeout(() => {
         modalRef.current.classList.remove("open");
-      }, 300);
+      }, delay);
     }
   }, [open]);
   return (
@@ -76,7 +78,7 @@ export const Modal = ({
           align-items: center;
           justify-content: center;
           z-index: 28;
-          transition: all 0.3s ease-in-out 0.2s;
+          transition: all 0.2s linear;
           overflow: auto;
         }
 
@@ -98,10 +100,6 @@ export const Modal = ({
         .content.right {
           right: 0;
           transform: translateX(100%);
-        }
-
-        .modal.animate .content {
-          transition: all 0.3s ease-in-out 0.2s;
         }
 
         .modal.animate::after {

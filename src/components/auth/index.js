@@ -62,10 +62,11 @@ export default () => {
           justify-content: center;
           width: 100%;
           max-width: 300px;
+          border: 2px solid var(--themeColor);
         }
         .header-inner span {
-          border-bottom: 2px solid var(--themeColor);
-          border-bottom: 2px solid #ebebeb;
+          /* border-bottom: 2px solid var(--themeColor);
+          border-bottom: 2px solid #ebebeb; */
           flex: 1;
           display: inline-block;
           font-size: 20px;
@@ -80,9 +81,8 @@ export default () => {
         .header-inner span.active {
           background-color: #000;
           background-color: var(--themeColor);
-          background-color: transparent;
-          border-bottom: 2px solid var(--themeColor);
-          color: #000;
+
+          color: #fff;
         }
       `}</style>
     </>

@@ -56,119 +56,116 @@ export default function ({ product, errorCode }) {
 
   return (
     <>
-      <Layout>
-        <div className="product">
-          <section className="product-image">
-            <ProductCarousel
-              deps={[product.fields.name]}
-              renderThumbs={true}
-              deps={[product.fields.images[0].fields.file.url]}
-            >
-              {fields.images.map((img, index) => (
-                <img src={`https://${img.fields.file.url}`} key={index} />
-              ))}
-            </ProductCarousel>
-          </section>
+      <div className="product">
+        <section className="product-image">
+          <ProductCarousel
+            deps={[product.fields.name]}
+            renderThumbs={true}
+            deps={[product.fields.images[0].fields.file.url]}
+          >
+            {fields.images.map((img, index) => (
+              <img src={`https://${img.fields.file.url}`} key={index} />
+            ))}
+          </ProductCarousel>
+        </section>
 
-          <div className="product-info">
-            <div className="product-info-inner">
-              <div className="info  no-mobile">
-                <h6>
-                  HOME / THE SHOP/ {fields.category.fields.name.toUpperCase()}
-                </h6>
-              </div>
-              <h1 className="name">{fields.name}</h1>
+        <div className="product-info">
+          <div className="product-info-inner">
+            <div className="info  no-mobile">
+              <h6>
+                HOME / THE SHOP/ {fields.category.fields.name.toUpperCase()}
+              </h6>
+            </div>
+            <h1 className="name">{fields.name}</h1>
 
-              <h2 className="price">Price: ${fields.price}</h2>
-              <div className="description">
-                A clothe that feels good on the skin as it does on the eyes.
-              </div>
+            <h2 className="price">Price: ${fields.price}</h2>
+            <div className="description">
+              A clothe that feels good on the skin as it does on the eyes.
+            </div>
 
-              {fields.sizes.includes("none") ? null : (
-                <div className="available-sizes">
-                  <h6>AVAILABLE SIZES</h6>
-                  <div className="size-input">
-                    <Select
-                      blurInputOnSelect={true}
-                      autoFocus={false}
-                      theme={(theme) => ({
-                        ...theme,
-                        borderRadius: 0,
-                        colors: {
-                          ...theme.colors,
-                          primary25: "#eee",
-                          primary: "#30292f",
-                        },
-                      })}
-                      instanceId="size-select"
-                      value={currsize}
-                      onChange={(val) => setCurrSize(val)}
-                      options={sizeOptions}
-                    />
-                  </div>
-                </div>
-              )}
-              <div className="actions">
-                <div className="input-wrapper">
-                  <NumberInput
-                    min={1}
-                    max={10}
-                    value={qty}
-                    onChange={(val) => setQty(val)}
+            {fields.sizes.includes("none") ? null : (
+              <div className="available-sizes">
+                <h6>AVAILABLE SIZES</h6>
+                <div className="size-input">
+                  <Select
+                    blurInputOnSelect={true}
+                    autoFocus={false}
+                    theme={(theme) => ({
+                      ...theme,
+                      borderRadius: 0,
+                      colors: {
+                        ...theme.colors,
+                        primary25: "#eee",
+                        primary: "#30292f",
+                      },
+                    })}
+                    instanceId="size-select"
+                    value={currsize}
+                    onChange={(val) => setCurrSize(val)}
+                    options={sizeOptions}
                   />
                 </div>
-                <button className="item-add" onClick={() => addToCart(product)}>
-                  add to cart
-                </button>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="additional-info">
-          <h4>ADDITIONAL INFO</h4>
-          <div className="additional-info-inner">
-            <div>
-              <span>Size and Fit</span>
-              <span>Lorem ipsum dolor sit amet consectet</span>
-            </div>
-            <div>
-              <span>Care Info</span>
-              <span>Dry clean only</span>
-            </div>
-            <div>
-              <span>Size</span>
-              <span>
-                {fields.sizes.reduce(
-                  (acc, el) =>
-                    el != "none" ? acc + el.toUpperCase() + "," : "",
-                  ""
-                )}
-              </span>
-            </div>
-            <div>
-              <span>Composition</span>
-              <span>Lorem ipsum dolor sit amet, consectetur</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="related-products">
-          <h4>RELATED PRODUCTS</h4>
-          {relatedProducts ? (
-            <div className="related-products-inner">
-              {relatedProducts.map((product) => (
-                <ProductItem
-                  key={product.sys.id}
-                  product={{ ...product.fields, id: product.sys.id }}
+            )}
+            <div className="actions">
+              <div className="input-wrapper">
+                <NumberInput
+                  min={1}
+                  max={10}
+                  value={qty}
+                  onChange={(val) => setQty(val)}
                 />
-              ))}
+              </div>
+              <button className="item-add" onClick={() => addToCart(product)}>
+                add to cart
+              </button>
             </div>
-          ) : (
-            <Spinner />
-          )}
+          </div>
         </div>
-      </Layout>
+      </div>
+
+      <div className="additional-info">
+        <h4>ADDITIONAL INFO</h4>
+        <div className="additional-info-inner">
+          <div>
+            <span>Size and Fit</span>
+            <span>Lorem ipsum dolor sit amet consectet</span>
+          </div>
+          <div>
+            <span>Care Info</span>
+            <span>Dry clean only</span>
+          </div>
+          <div>
+            <span>Size</span>
+            <span>
+              {fields.sizes.reduce(
+                (acc, el) => (el != "none" ? acc + el.toUpperCase() + "," : ""),
+                ""
+              )}
+            </span>
+          </div>
+          <div>
+            <span>Composition</span>
+            <span>Lorem ipsum dolor sit amet, consectetur</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="related-products">
+        <h4>RELATED PRODUCTS</h4>
+        {relatedProducts ? (
+          <div className="related-products-inner">
+            {relatedProducts.map((product) => (
+              <ProductItem
+                key={product.sys.id}
+                product={{ ...product.fields, id: product.sys.id }}
+              />
+            ))}
+          </div>
+        ) : (
+          <Spinner />
+        )}
+      </div>
 
       <style jsx>{`
         .product-carousel {
@@ -241,7 +238,6 @@ export default function ({ product, errorCode }) {
           box-shadow: none;
           border-radius: none;
           width: 65%;
-          //  background-color: #43aa8b;
         }
         .actions {
           display: flex;

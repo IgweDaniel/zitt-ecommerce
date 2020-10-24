@@ -6,7 +6,7 @@ import { Dashboard } from "../components/dashboard";
 export default () => {
   const user = null;
   return (
-    <Layout>
+    <>
       <main>{user ? <Dashboard /> : <AuthForm />}</main>
       <style jsx>{`
         main {
@@ -16,6 +16,6 @@ export default () => {
           justify-content: center;
         }
       `}</style>
-    </Layout>
+    </>
   );
 };

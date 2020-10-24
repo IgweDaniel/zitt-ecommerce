@@ -13,7 +13,7 @@ const Checkout = () => {
   } = useContext(Context);
   const [show, setshow] = useState(false);
   return (
-    <Layout>
+    <>
       <main>
         <div className="banner">
           {/* <CheckoutBannerIcon size={70} /> */}
@@ -284,7 +284,7 @@ const Checkout = () => {
           }
         }
       `}</style>
-    </Layout>
+    </>
   );
 };
 

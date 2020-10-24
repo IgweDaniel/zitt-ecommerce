@@ -147,10 +147,10 @@ export const Layout = ({ page = "Home", ...props }) => {
           color: inherit;
         }
         button {
-          /* background-color: #ef8e74; */
-          border: 2px solid var(--themeColor) !important;
-          background-color: transparent !important;
-          color: #000;
+          background-color: #ef8e74;
+          background-color: var(--themeColor);
+          border: none;
+          color: #fff;
 
           box-shadow: none;
           height: 40px;
